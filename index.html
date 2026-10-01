@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f1720">
+<title>Sparks Board</title>
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230f1720'/><text y='70' x='50' text-anchor='middle' font-size='60' fill='%23f6c453'>S</text></svg>">
+<style>
+  :root{
+    --bg:#0f1720; --panel:#172230; --panel2:#1e2b3c; --line:#2a3a4f;
+    --ink:#e8eef5; --dim:#90a2b8; --accent:#f6c453; --on-accent:#0f1720;
+    --go:#3fa66a; --draft:#4a90d9; --no:#c2544a; --warn:#e2893b; --no-ink:#e79a92;
+    --over-bg:#3a1f1c; --over-ink:#ef8c82;
+    --mode-bg:#1d3147; --mode-ink:#8fc2f0;
+    --ok-bg:#15291f; --ok-ink:#86d6a6; --ok-line:#27503a;
+    --bad-bg:#2b1a18; --bad-ink:#e79a92; --bad-line:#4d2b27;
+    --shadow:none;
+  }
+  /* The light palette is identical in both blocks. One applies when he picks Light,
+     the other when he leaves it on Auto and the device is light. */
+  html[data-theme="light"]{
+    --bg:#f3f6f9; --panel:#ffffff; --panel2:#e9eef4; --line:#dce3eb;
+    --ink:#15202c; --dim:#5c6b7d; --accent:#a0711a; --on-accent:#ffffff;
+    --go:#2f8b58; --draft:#2f6fb5; --no:#b03a31; --warn:#9a5c17; --no-ink:#a3302a;
+    --over-bg:#fbe8e6; --over-ink:#9c2f28;
+    --mode-bg:#e5effb; --mode-ink:#1f5a99;
+    --ok-bg:#e7f6ed; --ok-ink:#1c6b3f; --ok-line:#c0e2cd;
+    --bad-bg:#fbe8e6; --bad-ink:#9c2f28; --bad-line:#f0c6c2;
+    --shadow:0 1px 2px rgba(20,35,55,.07);
+  }
+  @media (prefers-color-scheme: light){
+    html[data-theme="auto"]{
+      --bg:#f3f6f9; --panel:#ffffff; --panel2:#e9eef4; --line:#dce3eb;
+      --ink:#15202c; --dim:#5c6b7d; --accent:#a0711a; --on-accent:#ffffff;
+      --go:#2f8b58; --draft:#2f6fb5; --no:#b03a31; --warn:#9a5c17; --no-ink:#a3302a;
+      --over-bg:#fbe8e6; --over-ink:#9c2f28;
+      --mode-bg:#e5effb; --mode-ink:#1f5a99;
+      --ok-bg:#e7f6ed; --ok-ink:#1c6b3f; --ok-line:#c0e2cd;
+      --bad-bg:#fbe8e6; --bad-ink:#9c2f28; --bad-line:#f0c6c2;
+      --shadow:0 1px 2px rgba(20,35,55,.07);
+    }
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    padding-bottom:env(safe-area-inset-bottom)}
+  header{position:sticky;top:0;z-index:5;background:var(--bg);
+    padding:14px 16px 0;border-bottom:1px solid var(--line)}
+  h1{margin:0;font-size:17px;letter-spacing:.3px}
+  h1 span{color:var(--accent)}
+  .hrow{display:flex;align-items:center;gap:10px}
+  .hrow h1{flex:1}
+  #theme{background:var(--panel2);border:1px solid var(--line);color:var(--dim);
+    border-radius:20px;padding:6px 11px;font:600 11px/1 inherit;cursor:pointer;white-space:nowrap}
+  .sub{color:var(--dim);font-size:12px;margin:2px 0 10px}
+  nav{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+  nav::-webkit-scrollbar{display:none}
+  nav button{flex:0 0 auto;background:none;border:none;border-bottom:2px solid transparent;
+    color:var(--dim);font:600 13px/1 inherit;padding:10px 12px;cursor:pointer}
+  nav button.on{color:var(--ink);border-bottom-color:var(--accent)}
+  nav button b{display:inline-block;margin-left:5px;background:var(--panel2);color:var(--dim);
+    border-radius:9px;padding:2px 6px;font-size:11px}
+  nav button.on b{background:var(--accent);color:var(--on-accent)}
+  main{padding:12px 12px 40px;max-width:760px;margin:0 auto}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;
+    padding:13px 14px;margin-bottom:10px;box-shadow:var(--shadow)}
+  .card.done{opacity:.5}
+  .top{display:flex;gap:8px;align-items:flex-start}
+  .ttl{font-weight:600;flex:1;font-size:15px}
+  .id{color:var(--dim);font-size:11px;font-variant-numeric:tabular-nums;padding-top:2px}
+  .meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .chip{font-size:11px;padding:3px 8px;border-radius:20px;background:var(--panel2);color:var(--dim)}
+  .chip.due{color:var(--warn)}
+  .chip.over{background:var(--over-bg);color:var(--over-ink)}
+  .chip.mode{background:var(--mode-bg);color:var(--mode-ink)}
+  .detail{color:var(--dim);font-size:13.5px;white-space:pre-wrap;margin-top:9px;
+    padding-top:9px;border-top:1px solid var(--line);display:none}
+  .card.open .detail{display:block}
+  .more{color:var(--accent);font-size:12px;margin-top:8px;cursor:pointer;display:inline-block}
+  .acts{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}
+  .acts button{flex:1 1 auto;min-width:92px;border:1px solid var(--line);background:var(--panel2);
+    color:var(--ink);border-radius:9px;padding:10px 12px;font:600 13px/1 inherit;cursor:pointer}
+  .acts button.go{background:var(--go);border-color:var(--go);color:#fff}
+  .acts button.draft{background:var(--draft);border-color:var(--draft);color:#fff}
+  .acts button.no{background:none;border-color:var(--no);color:var(--no-ink)}
+  .decided{margin-top:10px;padding:9px 11px;border-radius:9px;background:var(--ok-bg);
+    color:var(--ok-ink);font-size:12.5px;border:1px solid var(--ok-line)}
+  .decided.no{background:var(--bad-bg);color:var(--bad-ink);border-color:var(--bad-line)}
+  .empty{color:var(--dim);text-align:center;padding:50px 20px;font-size:14px}
+  #login{max-width:330px;margin:16vh auto;padding:0 20px;text-align:center}
+  #login input{width:100%;padding:13px;margin:7px 0;border-radius:10px;border:1px solid var(--line);
+    background:var(--panel);color:var(--ink);font-size:16px}
+  #login button{width:100%;padding:13px;margin-top:10px;border:none;border-radius:10px;
+    background:var(--accent);color:var(--on-accent);font:700 15px/1 inherit;cursor:pointer}
+  .err{color:var(--no-ink);font-size:13px;min-height:18px;margin-top:10px}
+  .hide{display:none!important}
+</style>
+<!-- Applied before first paint, otherwise a light-mode phone flashes the dark palette on every load. -->
+<script>document.documentElement.dataset.theme = localStorage.getItem('sparksboard.theme') || 'auto';</script>
+</head>
+<body>
+
+<div id="login">
+  <h1>Sparks <span>Board</span></h1>
+  <p class="sub">Sign in once. This device stays signed in.</p>
+  <input id="em" type="email" placeholder="email" autocomplete="username">
+  <input id="pw" type="password" placeholder="password" autocomplete="current-password">
+  <button id="go">Sign in</button>
+  <div class="err" id="err"></div>
+</div>
+
+<div id="app" class="hide">
+  <header>
+    <div class="hrow">
+      <h1>Sparks <span>Board</span></h1>
+      <button id="theme" type="button"></button>
+    </div>
+    <div class="sub" id="stamp"></div>
+    <nav id="tabs"></nav>
+  </header>
+  <main id="list"></main>
+</div>
+
+<script type="module">
+// Firebase over plain REST rather than the web SDK: one file, no CDN dependency,
+// nothing to drift on a version bump. Costs live updates, so the board polls instead.
+const API = "AIzaSyBf96GNLhtz6FDdbLxIW9efh98WG__eQmk", DB = "https://merakicaptiveportal-firebasedb-default-rtdb.firebaseio.com";
+const LS = 'sparksboard.session';
+
+const session = {
+  get:  () => { try { return JSON.parse(localStorage.getItem(LS)); } catch { return null; } },
+  set:  s  => localStorage.setItem(LS, JSON.stringify(s)),
+  drop: ()  => localStorage.removeItem(LS),
+};
+
+async function signIn(email, password) {
+  const r = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${API}`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password, returnSecureToken: true }),
+  });
+  const j = await r.json();
+  if (!j.idToken) throw new Error(j.error?.message || 'SIGNIN_FAILED');
+  const s = { uid: j.localId, tok: j.idToken, refresh: j.refreshToken, exp: Date.now() + 3300e3 };
+  session.set(s);
+  return s;
+}
+
+// Tokens last an hour; the board is meant to stay signed in for weeks, so refresh on demand.
+async function token() {
+  let s = session.get();
+  if (!s) return null;
+  if (Date.now() < s.exp) return s;
+  const r = await fetch(`https://securetoken.googleapis.com/v1/token?key=${API}`, {
+    method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: `grant_type=refresh_token&refresh_token=${encodeURIComponent(s.refresh)}`,
+  });
+  const j = await r.json();
+  if (!j.id_token) { session.drop(); return null; }
+  s = { ...s, tok: j.id_token, refresh: j.refresh_token, exp: Date.now() + 3300e3 };
+  session.set(s);
+  return s;
+}
+
+const THEMES = [
+  { k:'auto',  label:'Auto' },
+  { k:'light', label:'Light' },
+  { k:'dark',  label:'Dark' },
+];
+function paintTheme() {
+  const k = document.documentElement.dataset.theme;
+  const t = THEMES.find(x => x.k === k) || THEMES[0];
+  document.getElementById('theme').textContent = t.label;
+  // Keep the browser chrome in step with the page, or the notch area stays dark on a light board.
+  document.querySelector('meta[name=theme-color]')
+    .setAttribute('content', getComputedStyle(document.body).backgroundColor);
+}
+document.getElementById('theme').onclick = () => {
+  const i = THEMES.findIndex(x => x.k === document.documentElement.dataset.theme);
+  const next = THEMES[(i + 1) % THEMES.length].k;
+  document.documentElement.dataset.theme = next;
+  localStorage.setItem('sparksboard.theme', next);
+  paintTheme();
+};
+// On Auto the device can change under us, so follow it.
+matchMedia('(prefers-color-scheme: light)').addEventListener('change', paintTheme);
+paintTheme();
+
+const COLS = [
+  { k:'review',   label:'For review' },
+  { k:'blocked',  label:'Blocked' },
+  { k:'progress', label:'In progress' },
+  { k:'done',     label:'Done' },
+];
+const $ = id => document.getElementById(id);
+let cards = {}, active = 'review', base = null;
+
+$('go').onclick = async () => {
+  $('err').textContent = 'Signing in...';
+  try { await signIn($('em').value.trim(), $('pw').value); $('err').textContent = ''; await start(); }
+  catch (e) {
+    $('err').textContent = /PASSWORD|EMAIL|CREDENTIAL/i.test(e.message)
+      ? 'Wrong email or password.' : 'Could not reach the server. Try again.';
+  }
+};
+$('pw').addEventListener('keydown', e => { if (e.key === 'Enter') $('go').click(); });
+
+async function load() {
+  const s = await token();
+  if (!s) return false;
+  base = `${DB}/users/${s.uid}/kanban`;
+  const r = await fetch(`${base}/cards.json?auth=${s.tok}`);
+  if (!r.ok) return false;
+  cards = (await r.json()) || {};
+  render();
+  return true;
+}
+
+async function start() {
+  if (!(await load())) { $('login').classList.remove('hide'); $('app').classList.add('hide'); return; }
+  $('login').classList.add('hide'); $('app').classList.remove('hide');
+}
+
+setInterval(() => { if (!$('app').classList.contains('hide')) load(); }, 20000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) load(); });
+start();
+
+const today = new Date().toISOString().slice(0, 10);
+const esc = s => String(s ?? '').replace(/[&<>]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[c]));
+const dayDiff = d => Math.round((new Date(d) - new Date(today)) / 86400000);
+
+function dueChip(d) {
+  if (!d) return '';
+  const n = dayDiff(d);
+  if (n < 0)  return `<span class="chip over">${-n}d overdue</span>`;
+  if (n === 0) return `<span class="chip over">due today</span>`;
+  if (n <= 3) return `<span class="chip due">due ${d}</span>`;
+  return `<span class="chip">due ${d}</span>`;
+}
+
+async function decide(id, action, label) {
+  const patch = {
+    decision: { action, label: label || action, at: new Date().toISOString() },
+    // Approving does not finish the job, it hands it to me. Only a rejection is done on the spot.
+    column: action === 'reject' ? 'done' : 'progress',
+    updated: new Date().toISOString(),
+  };
+  cards[id] = { ...cards[id], ...patch };   // optimistic, so the tap feels instant
+  render();
+  const s = await token();
+  const r = await fetch(`${base}/cards/${id}.json?auth=${s.tok}`, { method: 'PATCH', body: JSON.stringify(patch) });
+  if (!r.ok) { alert('Could not save that. Check your signal and try again.'); }
+  load();
+}
+
+function actions(c) {
+  if (c.decision) {
+    const bad = c.decision.action === 'reject';
+    return `<div class="decided${bad ? ' no' : ''}">${bad ? 'Rejected' : 'You chose'}: <b>${esc(c.decision.label)}</b>
+      &middot; ${new Date(c.decision.at).toLocaleString('en-ZA', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' })}
+      ${c.decision.seen ? '&middot; actioned' : '&middot; sent to Sparks'}</div>`;
+  }
+  if (c.column !== 'review') return '';
+  const b = [];
+  if (Array.isArray(c.options) && c.options.length) {
+    c.options.forEach((o, i) => b.push(`<button class="${i === 0 ? 'go' : ''}" data-id="${c.id}" data-a="approve" data-l="${esc(o)}">${esc(o)}</button>`));
+  } else if (c.mode === 'draft') {
+    b.push(`<button class="draft" data-id="${c.id}" data-a="draft" data-l="Draft it first">Draft it first</button>`);
+    b.push(`<button class="go" data-id="${c.id}" data-a="approve" data-l="Approved, go">Approved, go</button>`);
+  } else {
+    b.push(`<button class="go" data-id="${c.id}" data-a="approve" data-l="Approved, go">Approved, go</button>`);
+    b.push(`<button class="draft" data-id="${c.id}" data-a="draft" data-l="Draft it first">Draft it first</button>`);
+  }
+  b.push(`<button class="no" data-id="${c.id}" data-a="reject" data-l="No">No</button>`);
+  return `<div class="acts">${b.join('')}</div>`;
+}
+
+function render() {
+  const all = Object.values(cards);
+  $('tabs').innerHTML = COLS.map(c => {
+    const n = all.filter(x => x.column === c.k).length;
+    return `<button class="${c.k === active ? 'on' : ''}" data-col="${c.k}">${c.label}<b>${n}</b></button>`;
+  }).join('');
+
+  const rows = all.filter(c => c.column === active)
+    .sort((a, b) => (a.due || '9999') < (b.due || '9999') ? -1 : 1);
+
+  $('list').innerHTML = rows.length ? rows.map(c => {
+    const blocked = c.column === 'blocked';
+    return `<div class="card" data-card="${c.id}">
+      <div class="top"><div class="ttl">${esc(c.title)}</div><div class="id">${c.id}</div></div>
+      <div class="meta">
+        ${c.tag ? `<span class="chip">${esc(c.tag)}</span>` : ''}
+        ${dueChip(c.due)}
+        ${blocked && c.owner ? `<span class="chip">waiting on ${esc(c.owner)}</span>` : ''}
+        ${blocked && c.blockedSince ? `<span class="chip over">${dayDiff(c.blockedSince) * -1}d</span>` : ''}
+        ${c.column === 'review' && c.mode === 'draft' ? `<span class="chip mode">draft first</span>` : ''}
+      </div>
+      ${c.detail ? `<span class="more">Details</span><div class="detail">${esc(c.detail)}</div>` : ''}
+      ${actions(c)}
+    </div>`;
+  }).join('') : `<div class="empty">Nothing here.${active === 'review' ? '<br>Clear board.' : ''}</div>`;
+
+  $('stamp').textContent = new Date().toLocaleString('en-ZA', { weekday:'short', day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
+}
+
+document.addEventListener('click', e => {
+  const tab = e.target.closest('[data-col]');
+  if (tab) { active = tab.dataset.col; render(); return; }
+  const more = e.target.closest('.more');
+  if (more) { more.closest('.card').classList.toggle('open'); return; }
+  const btn = e.target.closest('[data-a]');
+  if (btn) decide(btn.dataset.id, btn.dataset.a, btn.dataset.l);
+});
+</script>
+</body>
+</html>
