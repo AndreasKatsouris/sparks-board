@@ -258,7 +258,16 @@ async function start() {
   $('login').classList.add('hide'); $('app').classList.remove('hide');
 }
 
-setInterval(() => { if (!$('app').classList.contains('hide')) load(); }, 20000);
+// Which cards he has expanded. render() rebuilds the whole list, so without this the 20s
+// refresh collapsed whatever he was busy reading. Also hold the refresh entirely while
+// anything is open: do not move the page under him mid-sentence.
+const openCards = new Set();
+
+setInterval(() => {
+  if ($('app').classList.contains('hide')) return;
+  if (openCards.size) return;
+  load();
+}, 20000);
 document.addEventListener('visibilitychange', () => { if (!document.hidden) load(); });
 start();
 
@@ -379,7 +388,8 @@ function render() {
 
   $('list').innerHTML = rows.length ? rows.map(c => {
     const blocked = c.column === 'blocked';
-    return `<div class="card" data-card="${c.id}">
+    const isOpen = openCards.has(c.id);
+    return `<div class="card${isOpen ? ' open' : ''}" data-card="${c.id}">
       <div class="top"><div class="ttl">${esc(c.title)}</div><div class="id">${c.id}</div></div>
       <div class="meta">
         ${c.tag ? `<span class="chip">${esc(c.tag)}</span>` : ''}
@@ -388,7 +398,7 @@ function render() {
         ${blocked && c.blockedSince ? `<span class="chip over">${dayDiff(c.blockedSince) * -1}d</span>` : ''}
         ${c.column === 'review' && c.mode === 'draft' ? `<span class="chip mode">draft first</span>` : ''}
       </div>
-      ${c.detail ? `<span class="more">Details</span><div class="detail">${esc(c.detail)}</div>` : ''}
+      ${c.detail ? `<span class="more">${isOpen ? 'Hide' : 'Details'}</span><div class="detail">${esc(c.detail)}</div>` : ''}
       ${actions(c)}
     </div>`;
   }).join('') : `<div class="empty">Nothing here.${active === 'review' ? '<br>Clear board.' : ''}</div>`;
@@ -400,7 +410,14 @@ document.addEventListener('click', e => {
   const tab = e.target.closest('[data-col]');
   if (tab) { active = tab.dataset.col; render(); return; }
   const more = e.target.closest('.more');
-  if (more) { more.closest('.card').classList.toggle('open'); return; }
+  if (more) {
+    const card = more.closest('.card'), id = card.dataset.card;
+    openCards.has(id) ? openCards.delete(id) : openCards.add(id);
+    const now = openCards.has(id);
+    card.classList.toggle('open', now);
+    more.textContent = now ? 'Hide' : 'Details';
+    return;
+  }
   const btn = e.target.closest('[data-a]');
   if (btn) decide(btn.dataset.id, btn.dataset.a, btn.dataset.l);
 });
