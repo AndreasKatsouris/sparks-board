@@ -88,6 +88,33 @@
     color:var(--ok-ink);font-size:12.5px;border:1px solid var(--ok-line)}
   .decided.no{background:var(--bad-bg);color:var(--bad-ink);border-color:var(--bad-line)}
   .empty{color:var(--dim);text-align:center;padding:50px 20px;font-size:14px}
+  /* Schedule view. Deliberately a separate section, not a fifth Kanban column:
+     these are standing automations, not things he decides on. */
+  .vsw{display:flex;gap:0;background:var(--panel2);border:1px solid var(--line);
+    border-radius:9px;padding:2px;margin:0 auto 9px;max-width:760px}
+  .vsw button{flex:1;background:none;border:none;color:var(--dim);border-radius:7px;
+    padding:7px 10px;font:600 12.5px/1 inherit;cursor:pointer}
+  .vsw button.on{background:var(--panel);color:var(--ink);box-shadow:var(--shadow)}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:11px;
+    padding:11px 12px;box-shadow:var(--shadow)}
+  .stat b{display:block;font-size:21px;font-variant-numeric:tabular-nums;line-height:1.2}
+  .stat span{color:var(--dim);font-size:11px}
+  .sec{color:var(--dim);font-size:11.5px;font-weight:700;letter-spacing:.7px;
+    text-transform:uppercase;margin:18px 0 8px}
+  .sec:first-child{margin-top:0}
+  .trow{background:var(--panel);border:1px solid var(--line);border-radius:12px;
+    padding:11px 13px;margin-bottom:8px;box-shadow:var(--shadow)}
+  .trow.off{opacity:.5}
+  .thead{display:flex;gap:9px;align-items:baseline}
+  .temo{font-size:16px;line-height:1}
+  .tname{font-weight:600;flex:1;font-size:14.5px}
+  .tnext{color:var(--accent);font-size:11.5px;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .tdesc{color:var(--dim);font-size:12.5px;margin:5px 0 0 25px}
+  .tmeta{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 0 25px}
+  .tmeta .chip{font-size:10.5px;padding:2px 7px}
+  .chip.flag{background:var(--over-bg);color:var(--over-ink)}
+  .tid{color:var(--dim);font-size:10px;margin:7px 0 0 25px;font-variant-numeric:tabular-nums;opacity:.65}
   #login{max-width:330px;margin:16vh auto;padding:0 20px;text-align:center}
   #login input{width:100%;padding:13px;margin:7px 0;border-radius:10px;border:1px solid var(--line);
     background:var(--panel);color:var(--ink);font-size:16px}
@@ -117,6 +144,10 @@
       <button id="theme" type="button"></button>
     </div>
     <div class="sub" id="stamp"></div>
+    <div class="vsw">
+      <button id="vboard" class="on" data-view="board">Board</button>
+      <button id="vsched" data-view="schedule">Schedule</button>
+    </div>
     <nav id="tabs"></nav>
   </header>
   <main id="list"></main>
@@ -194,6 +225,7 @@ const COLS = [
 ];
 const $ = id => document.getElementById(id);
 let cards = {}, active = 'review', base = null;
+let view = localStorage.getItem('sparksboard.view') || 'board', sched = null;
 
 $('go').onclick = async () => {
   $('err').textContent = 'Signing in...';
@@ -209,9 +241,14 @@ async function load() {
   const s = await token();
   if (!s) return false;
   base = `${DB}/users/${s.uid}/kanban`;
-  const r = await fetch(`${base}/cards.json?auth=${s.tok}`);
+  const [r, sr] = await Promise.all([
+    fetch(`${base}/cards.json?auth=${s.tok}`),
+    fetch(`${base}/schedule.json?auth=${s.tok}`),
+  ]);
   if (!r.ok) return false;
   cards = (await r.json()) || {};
+  // The schedule is published by Sparks, not edited here, so a miss is not fatal.
+  if (sr.ok) sched = await sr.json();
   render();
   return true;
 }
@@ -275,7 +312,62 @@ function actions(c) {
   return `<div class="acts">${b.join('')}</div>`;
 }
 
+const GROUPS = [
+  { k:'intraday', label:'Through the day' },
+  { k:'daily',    label:'Daily' },
+  { k:'weekdays', label:'Several days a week' },
+  { k:'weekly',   label:'Weekly' },
+  { k:'monthly',  label:'Monthly' },
+];
+
+function renderSchedule() {
+  $('tabs').classList.add('hide');
+  if (!sched || !sched.tasks) {
+    $('list').innerHTML = `<div class="empty">Schedule has not been published yet.</div>`;
+    return;
+  }
+  const c = sched.counts || {};
+  const up = sched.tasks.filter(t => t.status !== 'paused')[0];
+  const head = `<div class="stats">
+    <div class="stat"><b>${c.active ?? 0}</b><span>Running</span></div>
+    <div class="stat"><b>${c.paused ?? 0}</b><span>Paused</span></div>
+    <div class="stat"><b>${esc(up ? up.next.replace('Today ', '') : '-')}</b><span>Next up</span></div>
+  </div>`;
+
+  const row = t => `<div class="trow${t.status === 'paused' ? ' off' : ''}">
+    <div class="thead">
+      <span class="temo">${esc(t.emoji)}</span>
+      <span class="tname">${esc(t.name)}</span>
+      <span class="tnext">${esc(t.next)}</span>
+    </div>
+    <div class="tdesc">${esc(t.desc)}</div>
+    <div class="tmeta">
+      <span class="chip">${esc(t.schedule)}</span>
+      <span class="chip">to ${esc(t.to)}</span>
+      <span class="chip">from ${esc(t.source)}</span>
+      ${t.uncatalogued ? '<span class="chip flag">uncatalogued</span>' : ''}
+    </div>
+    <div class="tid">${esc(t.id)} &middot; ${esc(t.cron)}</div>
+  </div>`;
+
+  const body = GROUPS.map(g => {
+    const rows = sched.tasks.filter(t => t.group === g.k && t.status !== 'paused');
+    return rows.length ? `<div class="sec">${g.label} &middot; ${rows.length}</div>${rows.map(row).join('')}` : '';
+  }).join('');
+
+  const off = sched.tasks.filter(t => t.status === 'paused');
+  const offBlock = off.length ? `<div class="sec">Paused &middot; ${off.length}</div>${off.map(row).join('')}` : '';
+
+  $('list').innerHTML = head + body + offBlock +
+    `<div class="tid" style="margin:16px 0 0;text-align:center">Published ${new Date(sched.updated).toLocaleString('en-ZA', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' })}</div>`;
+}
+
 function render() {
+  $('stamp').textContent = new Date().toLocaleString('en-ZA', { weekday:'short', day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
+  document.querySelectorAll('[data-view]').forEach(b => b.classList.toggle('on', b.dataset.view === view));
+  if (view === 'schedule') return renderSchedule();
+  $('tabs').classList.remove('hide');
+
   const all = Object.values(cards);
   $('tabs').innerHTML = COLS.map(c => {
     const n = all.filter(x => x.column === c.k).length;
@@ -300,11 +392,11 @@ function render() {
       ${actions(c)}
     </div>`;
   }).join('') : `<div class="empty">Nothing here.${active === 'review' ? '<br>Clear board.' : ''}</div>`;
-
-  $('stamp').textContent = new Date().toLocaleString('en-ZA', { weekday:'short', day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
 }
 
 document.addEventListener('click', e => {
+  const v = e.target.closest('[data-view]');
+  if (v) { view = v.dataset.view; localStorage.setItem('sparksboard.view', view); render(); return; }
   const tab = e.target.closest('[data-col]');
   if (tab) { active = tab.dataset.col; render(); return; }
   const more = e.target.closest('.more');
