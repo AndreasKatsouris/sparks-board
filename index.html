@@ -95,6 +95,17 @@
   .vsw button{flex:1;background:none;border:none;color:var(--dim);border-radius:7px;
     padding:7px 10px;font:600 12.5px/1 inherit;cursor:pointer}
   .vsw button.on{background:var(--panel);color:var(--ink);box-shadow:var(--shadow)}
+  /* Search deliberately ignores the column tabs: the whole point is finding a card
+     whose column he cannot remember, most often one already in Done. */
+  .srch{position:relative;max-width:760px;margin:0 auto 9px}
+  .srch input{width:100%;padding:9px 34px 9px 12px;border-radius:9px;border:1px solid var(--line);
+    background:var(--panel);color:var(--ink);font:14px/1.25 inherit;-webkit-appearance:none}
+  .srch input::placeholder{color:var(--dim)}
+  .srch input::-webkit-search-cancel-button{display:none}
+  .srch b{position:absolute;right:4px;top:50%;transform:translateY(-50%);color:var(--dim);
+    font:600 17px/1 inherit;cursor:pointer;padding:5px 9px}
+  .found{color:var(--dim);font-size:11.5px;margin:0 0 10px}
+  .chip.col{background:var(--mode-bg);color:var(--mode-ink)}
   .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
   .stat{background:var(--panel);border:1px solid var(--line);border-radius:11px;
     padding:11px 12px;box-shadow:var(--shadow)}
@@ -147,6 +158,10 @@
     <div class="vsw">
       <button id="vboard" class="on" data-view="board">Board</button>
       <button id="vsched" data-view="schedule">Schedule</button>
+    </div>
+    <div class="srch" id="srch">
+      <input id="q" type="search" placeholder="Find a card: K059, or any word" autocomplete="off" spellcheck="false">
+      <b id="qx" class="hide">&times;</b>
     </div>
     <nav id="tabs"></nav>
   </header>
@@ -226,6 +241,7 @@ const COLS = [
 const $ = id => document.getElementById(id);
 let cards = {}, active = 'review', base = null;
 let view = localStorage.getItem('sparksboard.view') || 'board', sched = null;
+let query = '';
 
 $('go').onclick = async () => {
   $('err').textContent = 'Signing in...';
@@ -236,6 +252,15 @@ $('go').onclick = async () => {
   }
 };
 $('pw').addEventListener('keydown', e => { if (e.key === 'Enter') $('go').click(); });
+
+$('q').addEventListener('input', () => {
+  query = $('q').value.trim();
+  $('qx').classList.toggle('hide', !query);
+  render();
+});
+$('qx').addEventListener('click', () => {
+  $('q').value = ''; query = ''; $('qx').classList.add('hide'); $('q').focus(); render();
+});
 
 async function load() {
   const s = await token();
@@ -274,6 +299,17 @@ start();
 const today = new Date().toISOString().slice(0, 10);
 const esc = s => String(s ?? '').replace(/[&<>]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[c]));
 const dayDiff = d => Math.round((new Date(d) - new Date(today)) / 86400000);
+
+// Ids are padded to three digits, so "K59" and "59" have to find K059 or the search is
+// useless on a phone. Fall back to a plain text match so a half-remembered title also works.
+function matches(c, q) {
+  const n = s => String(s ?? '').toLowerCase();
+  const id = n(c.id), t = n(q);
+  if (id.includes(t)) return true;
+  const a = id.match(/^([a-z]*)0*(\d+)$/), b = t.match(/^([a-z]*)0*(\d+)$/);
+  if (a && b && a[1].startsWith(b[1]) && a[2] === b[2]) return true;
+  return [c.title, c.tag, c.detail, c.owner, c.decision?.label].some(v => n(v).includes(t));
+}
 
 function dueChip(d) {
   if (!d) return '';
@@ -374,7 +410,8 @@ function renderSchedule() {
 function render() {
   $('stamp').textContent = new Date().toLocaleString('en-ZA', { weekday:'short', day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
   document.querySelectorAll('[data-view]').forEach(b => b.classList.toggle('on', b.dataset.view === view));
-  if (view === 'schedule') return renderSchedule();
+  if (view === 'schedule') { $('srch').classList.add('hide'); return renderSchedule(); }
+  $('srch').classList.remove('hide');
   $('tabs').classList.remove('hide');
 
   const all = Object.values(cards);
@@ -383,15 +420,25 @@ function render() {
     return `<button class="${c.k === active ? 'on' : ''}" data-col="${c.k}">${c.label}<b>${n}</b></button>`;
   }).join('');
 
-  const rows = all.filter(c => c.column === active)
-    .sort((a, b) => (a.due || '9999') < (b.due || '9999') ? -1 : 1);
+  const byDue = (a, b) => (a.due || '9999') < (b.due || '9999') ? -1 : 1;
+  const colOrder = Object.fromEntries(COLS.map((c, i) => [c.k, i]));
+  let rows, head = '';
+  if (query) {
+    $('tabs').classList.add('hide');
+    rows = all.filter(c => matches(c, query))
+      .sort((a, b) => (colOrder[a.column] - colOrder[b.column]) || byDue(a, b));
+    head = `<div class="found">${rows.length} ${rows.length === 1 ? 'card' : 'cards'} matching &ldquo;${esc(query)}&rdquo;, every column including done.</div>`;
+  } else {
+    rows = all.filter(c => c.column === active).sort(byDue);
+  }
 
-  $('list').innerHTML = rows.length ? rows.map(c => {
+  $('list').innerHTML = rows.length ? head + rows.map(c => {
     const blocked = c.column === 'blocked';
     const isOpen = openCards.has(c.id);
     return `<div class="card${isOpen ? ' open' : ''}" data-card="${c.id}">
       <div class="top"><div class="ttl">${esc(c.title)}</div><div class="id">${c.id}</div></div>
       <div class="meta">
+        ${query ? `<span class="chip col">${esc(COLS.find(x => x.k === c.column)?.label || c.column)}</span>` : ''}
         ${c.tag ? `<span class="chip">${esc(c.tag)}</span>` : ''}
         ${dueChip(c.due)}
         ${blocked && c.owner ? `<span class="chip">waiting on ${esc(c.owner)}</span>` : ''}
@@ -401,7 +448,9 @@ function render() {
       ${c.detail ? `<span class="more">${isOpen ? 'Hide' : 'Details'}</span><div class="detail">${esc(c.detail)}</div>` : ''}
       ${actions(c)}
     </div>`;
-  }).join('') : `<div class="empty">Nothing here.${active === 'review' ? '<br>Clear board.' : ''}</div>`;
+  }).join('') : query
+    ? `<div class="empty">No card matches &ldquo;${esc(query)}&rdquo;.</div>`
+    : `<div class="empty">Nothing here.${active === 'review' ? '<br>Clear board.' : ''}</div>`;
 }
 
 document.addEventListener('click', e => {
