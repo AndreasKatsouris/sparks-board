@@ -24,6 +24,9 @@ self.addEventListener('push', event => {
     badge: d.badge || BOARD + 'badge-96.png',
     requireInteraction: false,
     vibrate: [90, 50, 90],
+    // Chrome puts its own "Unsubscribe" button on an actionless web push, which silently kills
+    // every future notification if he taps it meaning "dismiss". Defining actions replaces it.
+    actions: [{ action: 'open', title: 'Open board' }],
   };
   event.waitUntil(self.registration.showNotification(title, opts));
 });
