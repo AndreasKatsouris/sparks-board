@@ -19,7 +19,9 @@ self.addEventListener('push', event => {
     renotify: true,
     data: { url: d.url || BOARD, id: d.id || null },
     icon: d.icon || BOARD + 'icon-192.png',
-    badge: d.badge || BOARD + 'icon-192.png',
+    // Android silhouettes the badge from its alpha channel, so it has to be a transparent
+    // PNG with only the mark opaque. Pointing it at the full colour icon renders a white block.
+    badge: d.badge || BOARD + 'badge-96.png',
     requireInteraction: false,
     vibrate: [90, 50, 90],
   };
