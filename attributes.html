@@ -1,0 +1,777 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GBP attributes, The Grove</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font:16px/1.45 -apple-system,"Helvetica Neue",Helvetica,Arial,sans-serif;background:#eef2f4;color:#13293d}
+header{background:#003A70;color:#E5ECED;padding:18px 16px 16px}
+h1{margin:0 0 4px;font-size:19px;letter-spacing:.2px}
+.sub{font-size:13px;opacity:.82}
+.counts{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.counts span{background:rgba(255,255,255,.12);border-radius:20px;padding:4px 10px;font-size:12px}
+.how{margin:0;padding:12px 16px;background:#fff;border-bottom:1px solid #d7dfe4;font-size:13.5px;color:#2E5D8A}
+.filters{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid #d7dfe4;padding:8px 10px;display:flex;gap:6px;overflow-x:auto}
+.filters button{flex:0 0 auto;border:1px solid #c3ced6;background:#fff;color:#2E5D8A;border-radius:18px;padding:6px 12px;font-size:13px;font-weight:600}
+.filters button.on{background:#003A70;color:#fff;border-color:#003A70}
+main{padding:10px 10px 150px;max-width:760px;margin:0 auto}
+section h2{font-size:13px;text-transform:uppercase;letter-spacing:.9px;color:#5d7285;margin:20px 4px 8px}
+.gc{background:#dbe3e8;color:#5d7285;border-radius:10px;padding:1px 7px;font-size:11px;margin-left:4px}
+.row{background:#fff;border:1px solid #dde4e9;border-left:5px solid #dde4e9;border-radius:10px;padding:11px 12px;margin-bottom:8px}
+.row[data-kind=change]{border-left-color:#c62828}
+.row[data-kind=verify]{border-left-color:#ef8f00}
+.row[data-kind=ask]{border-left-color:#2E5D8A}
+.row[data-kind=leave]{border-left-color:#b9c4cc}
+.row[data-kind=keep]{border-left-color:#2e7d52}
+.rh{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.nm{font-weight:700;font-size:15.5px}
+.id{display:block;font:11.5px ui-monospace,Menlo,monospace;color:#8595a2;font-weight:400;margin-top:1px}
+.cur{font-size:12.5px;color:#5d7285;white-space:nowrap}
+.cur b{color:#13293d}
+.rec{font-size:13px;margin:8px 0 9px;padding:7px 9px;border-radius:7px;background:#f3f6f8;color:#3c5466}
+.rec-change{background:#fdecec;color:#8e2020}
+.rec-verify{background:#fdf2e0;color:#8a5600}
+.rec-ask{background:#e9f1fa;color:#1c4a7a}
+.btns{display:flex;gap:6px}
+.b{flex:1;padding:11px 4px;border:1px solid #c3ced6;background:#fafcfd;color:#2E5D8A;border-radius:8px;font-size:13px;font-weight:700;letter-spacing:.3px}
+.b.sel{background:#003A70;border-color:#003A70;color:#fff}
+.b.sel[data-v=NO],.b.sel[data-v=CLEAR]{background:#c62828;border-color:#c62828}
+.b.sel[data-v=YES]{background:#2e7d52;border-color:#2e7d52}
+.tx,.cm{width:100%;margin-top:7px;padding:9px;border:1px solid #c3ced6;border-radius:8px;font:14px inherit;resize:vertical}
+.cm{display:none}
+.row.touched .cm{display:block}
+footer{position:fixed;bottom:0;left:0;right:0;background:#003A70;color:#fff;padding:10px 12px;display:flex;gap:8px;align-items:center;box-shadow:0 -2px 10px rgba(0,0,0,.2)}
+footer .st{flex:1;font-size:12.5px;line-height:1.3}
+footer button{border:0;border-radius:8px;padding:11px 13px;font-size:13px;font-weight:700;background:#E5ECED;color:#003A70}
+footer button.g{background:#2e7d52;color:#fff}
+dialog{border:0;border-radius:12px;padding:0;width:92%;max-width:640px}
+dialog .dh{background:#003A70;color:#fff;padding:12px 14px;font-weight:700;font-size:14px}
+dialog pre{margin:0;padding:14px;white-space:pre-wrap;font:12.5px ui-monospace,Menlo,monospace;max-height:58vh;overflow:auto}
+dialog .df{padding:10px 14px;display:flex;gap:8px;justify-content:flex-end;border-top:1px solid #e3e9ed}
+dialog .df button{border:0;border-radius:8px;padding:10px 14px;font-weight:700;background:#003A70;color:#fff}
+</style></head><body>
+<header>
+<h1>Google Business Profile, attribute walkthrough</h1>
+<div class="sub">Ocean Basket The Grove &middot; all 88 attributes Google offers for a seafood restaurant in South Africa<br>Live values pulled 2026/10/07, 14:54:11 SAST</div>
+<div class="counts"><span>7 wrong</span><span>6 to confirm</span><span>6 your call</span><span>47 correct</span><span>22 leave empty</span></div>
+</header>
+<p class="how">Tap a choice on any row. Rows you touch turn into your answer and a note box opens if you want to tell me why. Nothing here changes Google. When you are done, hit <b>Copy my marks</b> at the bottom and paste it to me on Telegram, and I will build the list for Social Places from exactly that. Your marks are saved on this device, so you can close it and come back.</p>
+<div class="filters">
+<button data-f="all" class="on">All 88</button>
+<button data-f="change">Wrong 7</button>
+<button data-f="verify">Confirm 6</button>
+<button data-f="ask">Your call 6</button>
+<button data-f="todo">Not marked yet</button>
+<button data-f="marked">Marked</button>
+<button data-f="keep">Correct 47</button>
+<button data-f="leave">Leave empty 22</button>
+</div>
+<main><section><h2>Planning <span class="gc">2</span></h2><div class="row" data-id="accepts_reservations" data-kind="keep" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Accepts reservations<span class="id">accepts_reservations</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it &middot; Correct, and this is the one of the two reservation flags that should be on.</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="requires_reservations" data-kind="change" data-bool="1" data-cur="NO">
+  <div class="rh"><div class="nm">Reservations required<span class="id">requires_reservations</span></div>
+    <div class="cur">now: <b>NO</b></div></div>
+  <div class="rec rec-change">Sparks: change to NO &middot; Both reservation flags were on. I set this to false at Google at 14h40 today, so it is already corrected here and still has to be carried to the other platforms.</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div></section><section><h2>Dining options <span class="gc">10</span></h2><div class="row" data-id="serves_breakfast" data-kind="change" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Breakfast<span class="id">serves_breakfast</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-change">Sparks: change to NO &middot; We open at 11h00.</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="serves_brunch" data-kind="change" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Brunch<span class="id">serves_brunch</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-change">Sparks: change to NO &middot; Not a service we run.</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="has_catering" data-kind="ask" data-bool="1" data-cur="not set">
+  <div class="rh"><div class="nm">Catering<span class="id">has_catering</span></div>
+    <div class="cur">now: <b>not set</b></div></div>
+  <div class="rec rec-ask">Sparks: your call &middot; Never set. Do we cater offsite? It is a search people make.</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="has_counter_service" data-kind="verify" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Counter service<span class="id">has_counter_service</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-verify">Sparks: confirm this &middot; Reads yes. Do guests ever order at a counter, or is it table service only?</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="serves_dessert" data-kind="keep" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Dessert<span class="id">serves_dessert</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="serves_dinner" data-kind="keep" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Dinner<span class="id">serves_dinner</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="serves_lunch" data-kind="keep" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Lunch<span class="id">serves_lunch</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="has_order_and_pay_ahead" data-kind="ask" data-bool="1" data-cur="not set">
+  <div class="rh"><div class="nm">Pay ahead<span class="id">has_order_and_pay_ahead</span></div>
+    <div class="cur">now: <b>not set</b></div></div>
+  <div class="rec rec-ask">Sparks: your call &middot; Never set. We have an order-ahead link, so this is probably a yes.</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="has_seating" data-kind="keep" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Seating<span class="id">has_seating</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="has_table_service" data-kind="keep" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Table service<span class="id">has_table_service</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div></section><section><h2>Offerings <span class="gc">16</span></h2><div class="row" data-id="serves_alcohol" data-kind="keep" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Alcohol<span class="id">serves_alcohol</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="has_all_you_can_eat_always" data-kind="keep" data-bool="1" data-cur="NO">
+  <div class="rh"><div class="nm">All you can eat<span class="id">has_all_you_can_eat_always</span></div>
+    <div class="cur">now: <b>NO</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="serves_beer" data-kind="keep" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Beer<span class="id">serves_beer</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="has_braille_menu" data-kind="leave" data-bool="1" data-cur="not set">
+  <div class="rh"><div class="nm">Braille menu<span class="id">has_braille_menu</span></div>
+    <div class="cur">now: <b>not set</b></div></div>
+  <div class="rec rec-leave">Sparks: leave empty</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="serves_cocktails" data-kind="keep" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Cocktails<span class="id">serves_cocktails</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="serves_coffee" data-kind="keep" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Coffee<span class="id">serves_coffee</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="serves_happy_hour_drinks" data-kind="ask" data-bool="1" data-cur="not set">
+  <div class="rh"><div class="nm">Happy hour drinks<span class="id">serves_happy_hour_drinks</span></div>
+    <div class="cur">now: <b>not set</b></div></div>
+  <div class="rec rec-ask">Sparks: your call &middot; Never set. Do we run one?</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="serves_happy_hour_food" data-kind="ask" data-bool="1" data-cur="not set">
+  <div class="rh"><div class="nm">Happy hour food<span class="id">serves_happy_hour_food</span></div>
+    <div class="cur">now: <b>not set</b></div></div>
+  <div class="rec rec-ask">Sparks: your call &middot; Never set. Same question for food.</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="serves_liquor" data-kind="keep" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Hard liquor<span class="id">serves_liquor</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="serves_late_night_food" data-kind="change" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Late-night food<span class="id">serves_late_night_food</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-change">Sparks: change to NO &middot; Last service 21h00, 21h30 Friday and Saturday.</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="serves_organic" data-kind="change" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Organic dishes<span class="id">serves_organic</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-change">Sparks: change to NO &middot; Not a claim we can support.</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="has_private_dining_room" data-kind="leave" data-bool="1" data-cur="not set">
+  <div class="rh"><div class="nm">Private dining room<span class="id">has_private_dining_room</span></div>
+    <div class="cur">now: <b>not set</b></div></div>
+  <div class="rec rec-leave">Sparks: leave empty</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="has_salad_bar" data-kind="change" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Salad bar<span class="id">has_salad_bar</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-change">Sparks: change to NO &middot; We do not have one.</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="serves_small_plates" data-kind="keep" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Small plates<span class="id">serves_small_plates</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="serves_vegetarian" data-kind="keep" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Vegetarian options<span class="id">serves_vegetarian</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="serves_wine" data-kind="keep" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Wine<span class="id">serves_wine</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div></section><section><h2>Amenities <span class="gc">4</span></h2><div class="row" data-id="has_bar_onsite" data-kind="change" data-bool="1" data-cur="NO">
+  <div class="rh"><div class="nm">Bar onsite<span class="id">has_bar_onsite</span></div>
+    <div class="cur">now: <b>NO</b></div></div>
+  <div class="rec rec-change">Sparks: change to YES &middot; We run a bar. Currently reads no.</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="has_restroom_unisex" data-kind="leave" data-bool="1" data-cur="not set">
+  <div class="rh"><div class="nm">Gender-neutral restroom<span class="id">has_restroom_unisex</span></div>
+    <div class="cur">now: <b>not set</b></div></div>
+  <div class="rec rec-leave">Sparks: leave empty</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="has_restroom" data-kind="keep" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Restroom<span class="id">has_restroom</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="wi_fi" data-kind="keep" data-bool="0" data-cur="free_wi_fi">
+  <div class="rh"><div class="nm">Wi-Fi<span class="id">wi_fi</span></div>
+    <div class="cur">now: <b>free_wi_fi</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="KEEP">KEEP</button><button class="b" data-v="CHANGE">CHANGE</button><button class="b" data-v="CLEAR">CLEAR</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div></section><section><h2>Service options <span class="gc">7</span></h2><div class="row" data-id="has_delivery" data-kind="keep" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Delivery<span class="id">has_delivery</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="serves_dine_in" data-kind="keep" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Dine-in<span class="id">serves_dine_in</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="has_drive_through" data-kind="keep" data-bool="1" data-cur="NO">
+  <div class="rh"><div class="nm">Drive-through<span class="id">has_drive_through</span></div>
+    <div class="cur">now: <b>NO</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="has_no_contact_delivery" data-kind="keep" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">No-contact delivery<span class="id">has_no_contact_delivery</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="has_onsite_services" data-kind="leave" data-bool="1" data-cur="not set">
+  <div class="rh"><div class="nm">Onsite services<span class="id">has_onsite_services</span></div>
+    <div class="cur">now: <b>not set</b></div></div>
+  <div class="rec rec-leave">Sparks: leave empty</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="has_seating_outdoors" data-kind="verify" data-bool="1" data-cur="NO">
+  <div class="rh"><div class="nm">Outdoor seating<span class="id">has_seating_outdoors</span></div>
+    <div class="cur">now: <b>NO</b></div></div>
+  <div class="rec rec-verify">Sparks: confirm this &middot; Reads no. Confirm there is genuinely no outside table.</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="has_takeout" data-kind="keep" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Takeout<span class="id">has_takeout</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div></section><section><h2>Highlights <span class="gc">4</span></h2><div class="row" data-id="has_fireplace" data-kind="keep" data-bool="1" data-cur="NO">
+  <div class="rh"><div class="nm">Fireplace<span class="id">has_fireplace</span></div>
+    <div class="cur">now: <b>NO</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="has_live_music" data-kind="keep" data-bool="1" data-cur="NO">
+  <div class="rh"><div class="nm">Live music<span class="id">has_live_music</span></div>
+    <div class="cur">now: <b>NO</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="has_seating_rooftop" data-kind="leave" data-bool="1" data-cur="not set">
+  <div class="rh"><div class="nm">Rooftop seating<span class="id">has_seating_rooftop</span></div>
+    <div class="cur">now: <b>not set</b></div></div>
+  <div class="rec rec-leave">Sparks: leave empty</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="suitable_for_watching_sports" data-kind="verify" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Sports<span class="id">suitable_for_watching_sports</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-verify">Sparks: confirm this &middot; Reads yes. Are the screens on sport, and do we want that crowd on a Saturday?</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div></section><section><h2>Parking <span class="gc">8</span></h2><div class="row" data-id="has_parking_garage_free" data-kind="leave" data-bool="1" data-cur="not set">
+  <div class="rh"><div class="nm">Free parking garage<span class="id">has_parking_garage_free</span></div>
+    <div class="cur">now: <b>not set</b></div></div>
+  <div class="rec rec-leave">Sparks: leave empty</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="has_parking_lot_free" data-kind="verify" data-bool="1" data-cur="NO">
+  <div class="rh"><div class="nm">Free parking lot<span class="id">has_parking_lot_free</span></div>
+    <div class="cur">now: <b>NO</b></div></div>
+  <div class="rec rec-verify">Sparks: confirm this &middot; Reads no. Same question, the two have to agree.</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="has_parking_street_free" data-kind="verify" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Free street parking<span class="id">has_parking_street_free</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-verify">Sparks: confirm this &middot; Reads yes. Is there usable free street parking at the mall?</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="has_onsite_parking" data-kind="ask" data-bool="1" data-cur="not set">
+  <div class="rh"><div class="nm">On-site parking<span class="id">has_onsite_parking</span></div>
+    <div class="cur">now: <b>not set</b></div></div>
+  <div class="rec rec-ask">Sparks: your call &middot; Never set. The mall parkade is on site in a guest sense.</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="has_parking_garage_paid" data-kind="leave" data-bool="1" data-cur="not set">
+  <div class="rh"><div class="nm">Paid parking garage<span class="id">has_parking_garage_paid</span></div>
+    <div class="cur">now: <b>not set</b></div></div>
+  <div class="rec rec-leave">Sparks: leave empty</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="has_parking_lot_paid" data-kind="verify" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Paid parking lot<span class="id">has_parking_lot_paid</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-verify">Sparks: confirm this &middot; Reads yes. Grove parking: paid or free?</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="has_parking_street_paid" data-kind="leave" data-bool="1" data-cur="not set">
+  <div class="rh"><div class="nm">Paid street parking<span class="id">has_parking_street_paid</span></div>
+    <div class="cur">now: <b>not set</b></div></div>
+  <div class="rec rec-leave">Sparks: leave empty</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="has_parking_valet" data-kind="leave" data-bool="1" data-cur="not set">
+  <div class="rh"><div class="nm">Valet parking<span class="id">has_parking_valet</span></div>
+    <div class="cur">now: <b>not set</b></div></div>
+  <div class="rec rec-leave">Sparks: leave empty</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div></section><section><h2>Children <span class="gc">5</span></h2><div class="row" data-id="welcomes_children" data-kind="keep" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Good for kids<span class="id">welcomes_children</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="has_changing_tables" data-kind="keep" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Has changing table(s)<span class="id">has_changing_tables</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="has_high_chairs" data-kind="keep" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">High chairs<span class="id">has_high_chairs</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="has_childrens_menu" data-kind="keep" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Kids' menu<span class="id">has_childrens_menu</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="has_lactation_space" data-kind="leave" data-bool="1" data-cur="not set">
+  <div class="rh"><div class="nm">Nursing room<span class="id">has_lactation_space</span></div>
+    <div class="cur">now: <b>not set</b></div></div>
+  <div class="rec rec-leave">Sparks: leave empty</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div></section><section><h2>Crowd <span class="gc">3</span></h2><div class="row" data-id="welcomes_families" data-kind="keep" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Family-friendly<span class="id">welcomes_families</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="welcomes_lgbtq" data-kind="keep" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">LGBTQ+ friendly<span class="id">welcomes_lgbtq</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="is_transgender_safespace" data-kind="leave" data-bool="1" data-cur="not set">
+  <div class="rh"><div class="nm">Transgender safespace<span class="id">is_transgender_safespace</span></div>
+    <div class="cur">now: <b>not set</b></div></div>
+  <div class="rec rec-leave">Sparks: leave empty</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div></section><section><h2>Payments <span class="gc">6</span></h2><div class="row" data-id="requires_cash_only" data-kind="keep" data-bool="1" data-cur="NO">
+  <div class="rh"><div class="nm">Cash-only<span class="id">requires_cash_only</span></div>
+    <div class="cur">now: <b>NO</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="pay_check" data-kind="keep" data-bool="1" data-cur="NO">
+  <div class="rh"><div class="nm">Checks<span class="id">pay_check</span></div>
+    <div class="cur">now: <b>NO</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="pay_credit_card" data-kind="keep" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Credit cards<span class="id">pay_credit_card</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="pay_credit_card_types_accepted" data-kind="leave" data-bool="0" data-cur="not set">
+  <div class="rh"><div class="nm">Credit cards<span class="id">pay_credit_card_types_accepted</span></div>
+    <div class="cur">now: <b>not set</b></div></div>
+  <div class="rec rec-leave">Sparks: leave empty &middot; Card brands. Low value, and wrong is worse than empty.</div>
+  <div class="btns"><button class="b" data-v="KEEP">KEEP</button><button class="b" data-v="CHANGE">CHANGE</button><button class="b" data-v="CLEAR">CLEAR</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="pay_debit_card" data-kind="keep" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Debit cards<span class="id">pay_debit_card</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="pay_mobile_nfc" data-kind="keep" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">NFC mobile payments<span class="id">pay_mobile_nfc</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div></section><section><h2>Accessibility <span class="gc">6</span></h2><div class="row" data-id="has_assisted_listening_devices" data-kind="leave" data-bool="1" data-cur="not set">
+  <div class="rh"><div class="nm">Assisted listening devices<span class="id">has_assisted_listening_devices</span></div>
+    <div class="cur">now: <b>not set</b></div></div>
+  <div class="rec rec-leave">Sparks: leave empty</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="has_hearing_loop" data-kind="leave" data-bool="1" data-cur="not set">
+  <div class="rh"><div class="nm">Assistive hearing loop<span class="id">has_hearing_loop</span></div>
+    <div class="cur">now: <b>not set</b></div></div>
+  <div class="rec rec-leave">Sparks: leave empty</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="has_wheelchair_accessible_entrance" data-kind="keep" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Wheelchair accessible entrance<span class="id">has_wheelchair_accessible_entrance</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="has_wheelchair_accessible_parking" data-kind="keep" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Wheelchair accessible parking lot<span class="id">has_wheelchair_accessible_parking</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="has_wheelchair_accessible_restroom" data-kind="keep" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Wheelchair accessible restroom<span class="id">has_wheelchair_accessible_restroom</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="has_wheelchair_accessible_seating" data-kind="keep" data-bool="1" data-cur="YES">
+  <div class="rh"><div class="nm">Wheelchair accessible seating<span class="id">has_wheelchair_accessible_seating</span></div>
+    <div class="cur">now: <b>YES</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div></section><section><h2>Pets <span class="gc">3</span></h2><div class="row" data-id="welcomes_dogs" data-kind="keep" data-bool="1" data-cur="NO">
+  <div class="rh"><div class="nm">Dogs allowed<span class="id">welcomes_dogs</span></div>
+    <div class="cur">now: <b>NO</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="allows_dogs_inside" data-kind="leave" data-bool="1" data-cur="not set">
+  <div class="rh"><div class="nm">Dogs allowed inside<span class="id">allows_dogs_inside</span></div>
+    <div class="cur">now: <b>not set</b></div></div>
+  <div class="rec rec-leave">Sparks: leave empty</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="allows_dogs_outside" data-kind="leave" data-bool="1" data-cur="not set">
+  <div class="rh"><div class="nm">Dogs allowed outside<span class="id">allows_dogs_outside</span></div>
+    <div class="cur">now: <b>not set</b></div></div>
+  <div class="rec rec-leave">Sparks: leave empty</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div></section><section><h2>From the business <span class="gc">1</span></h2><div class="row" data-id="is_owned_by_women" data-kind="leave" data-bool="1" data-cur="not set">
+  <div class="rh"><div class="nm">Identifies as women-owned<span class="id">is_owned_by_women</span></div>
+    <div class="cur">now: <b>not set</b></div></div>
+  <div class="rec rec-leave">Sparks: leave empty</div>
+  <div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="EMPTY">LEAVE EMPTY</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div></section><section><h2>Place page URLs <span class="gc">12</span></h2><div class="row" data-id="url_facebook" data-kind="keep" data-bool="0" data-cur="https://www.facebook.com/obthegrove/">
+  <div class="rh"><div class="nm">Facebook<span class="id">url_facebook</span></div>
+    <div class="cur">now: <b>https://www.facebook.com/obthegrove/</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="KEEP">KEEP</button><button class="b" data-v="CHANGE">CHANGE</button><button class="b" data-v="CLEAR">CLEAR</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="url_instagram" data-kind="keep" data-bool="0" data-cur="https://www.instagram.com/oceanbasketthegrove/">
+  <div class="rh"><div class="nm">Instagram<span class="id">url_instagram</span></div>
+    <div class="cur">now: <b>https://www.instagram.com/oceanbasketthegrove/</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it</div>
+  <div class="btns"><button class="b" data-v="KEEP">KEEP</button><button class="b" data-v="CHANGE">CHANGE</button><button class="b" data-v="CLEAR">CLEAR</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="url_linkedin" data-kind="leave" data-bool="0" data-cur="not set">
+  <div class="rh"><div class="nm">Linkedin<span class="id">url_linkedin</span></div>
+    <div class="cur">now: <b>not set</b></div></div>
+  <div class="rec rec-leave">Sparks: leave empty</div>
+  <div class="btns"><button class="b" data-v="KEEP">KEEP</button><button class="b" data-v="CHANGE">CHANGE</button><button class="b" data-v="CLEAR">CLEAR</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="url_menu" data-kind="keep" data-bool="0" data-cur="https://oceanbasket.co.za/menu/#main?utm_source=google_maps&amp;utm_medium=website_button&amp;utm_campaign=SP&amp;utm_content=SP">
+  <div class="rh"><div class="nm">Menu or services link<span class="id">url_menu</span></div>
+    <div class="cur">now: <b>https://oceanbasket.co.za/menu/#main?utm_source=google_maps&amp;utm_medium=website_button&amp;utm_campaign=SP&amp;utm_content=SP</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it &middot; Points at the group menu page, not ours, and carries utm_campaign=SP so Social Places can claim the traffic.</div>
+  <div class="btns"><button class="b" data-v="KEEP">KEEP</button><button class="b" data-v="CHANGE">CHANGE</button><button class="b" data-v="CLEAR">CLEAR</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="url_order_ahead" data-kind="keep" data-bool="0" data-cur="https://order.oceanbasket.com/store/thegrove">
+  <div class="rh"><div class="nm">Order ahead links<span class="id">url_order_ahead</span></div>
+    <div class="cur">now: <b>https://order.oceanbasket.com/store/thegrove</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it &middot; Not click-tested yet.</div>
+  <div class="btns"><button class="b" data-v="KEEP">KEEP</button><button class="b" data-v="CHANGE">CHANGE</button><button class="b" data-v="CLEAR">CLEAR</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="url_pinterest" data-kind="leave" data-bool="0" data-cur="not set">
+  <div class="rh"><div class="nm">Pinterest<span class="id">url_pinterest</span></div>
+    <div class="cur">now: <b>not set</b></div></div>
+  <div class="rec rec-leave">Sparks: leave empty</div>
+  <div class="btns"><button class="b" data-v="KEEP">KEEP</button><button class="b" data-v="CHANGE">CHANGE</button><button class="b" data-v="CLEAR">CLEAR</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="url_reservations" data-kind="keep" data-bool="0" data-cur="https://reservations.getwisely.com/ocean-basket-the-grove-pretoria">
+  <div class="rh"><div class="nm">Reservations links<span class="id">url_reservations</span></div>
+    <div class="cur">now: <b>https://reservations.getwisely.com/ocean-basket-the-grove-pretoria</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it &middot; Not click-tested yet.</div>
+  <div class="btns"><button class="b" data-v="KEEP">KEEP</button><button class="b" data-v="CHANGE">CHANGE</button><button class="b" data-v="CLEAR">CLEAR</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="url_text_messaging" data-kind="leave" data-bool="0" data-cur="not set">
+  <div class="rh"><div class="nm">Texting number<span class="id">url_text_messaging</span></div>
+    <div class="cur">now: <b>not set</b></div></div>
+  <div class="rec rec-leave">Sparks: leave empty</div>
+  <div class="btns"><button class="b" data-v="KEEP">KEEP</button><button class="b" data-v="CHANGE">CHANGE</button><button class="b" data-v="CLEAR">CLEAR</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="url_tiktok" data-kind="leave" data-bool="0" data-cur="not set">
+  <div class="rh"><div class="nm">Tiktok<span class="id">url_tiktok</span></div>
+    <div class="cur">now: <b>not set</b></div></div>
+  <div class="rec rec-leave">Sparks: leave empty</div>
+  <div class="btns"><button class="b" data-v="KEEP">KEEP</button><button class="b" data-v="CHANGE">CHANGE</button><button class="b" data-v="CLEAR">CLEAR</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="url_whatsapp" data-kind="keep" data-bool="0" data-cur="https://wa.me/27600717304">
+  <div class="rh"><div class="nm">WhatsApp<span class="id">url_whatsapp</span></div>
+    <div class="cur">now: <b>https://wa.me/27600717304</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it &middot; Not click-tested yet, and we do not know that the number is monitored.</div>
+  <div class="btns"><button class="b" data-v="KEEP">KEEP</button><button class="b" data-v="CHANGE">CHANGE</button><button class="b" data-v="CLEAR">CLEAR</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="url_twitter" data-kind="keep" data-bool="0" data-cur="https://twitter.com/TheOceanBasket">
+  <div class="rh"><div class="nm">X (Twitter)<span class="id">url_twitter</span></div>
+    <div class="cur">now: <b>https://twitter.com/TheOceanBasket</b></div></div>
+  <div class="rec rec-keep">Sparks: correct, leave it &middot; The national Ocean Basket account, not ours. Fine, but it is not us.</div>
+  <div class="btns"><button class="b" data-v="KEEP">KEEP</button><button class="b" data-v="CHANGE">CHANGE</button><button class="b" data-v="CLEAR">CLEAR</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div><div class="row" data-id="url_youtube" data-kind="leave" data-bool="0" data-cur="not set">
+  <div class="rh"><div class="nm">Youtube<span class="id">url_youtube</span></div>
+    <div class="cur">now: <b>not set</b></div></div>
+  <div class="rec rec-leave">Sparks: leave empty</div>
+  <div class="btns"><button class="b" data-v="KEEP">KEEP</button><button class="b" data-v="CHANGE">CHANGE</button><button class="b" data-v="CLEAR">CLEAR</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div></section><section><h2>Place page attributes <span class="gc">1</span></h2><div class="row" data-id="preferred_messaging_service" data-kind="ask" data-bool="0" data-cur="not set">
+  <div class="rh"><div class="nm">Primary chat<span class="id">preferred_messaging_service</span></div>
+    <div class="cur">now: <b>not set</b></div></div>
+  <div class="rec rec-ask">Sparks: your call &middot; Never set. WhatsApp, but only if 060 071 7304 is actually watched.</div>
+  <div class="btns"><button class="b" data-v="KEEP">KEEP</button><button class="b" data-v="CHANGE">CHANGE</button><button class="b" data-v="CLEAR">CLEAR</button></div>
+  <input class="tx" placeholder="new value" hidden>
+  <textarea class="cm" placeholder="note for me (optional)" rows="1"></textarea>
+</div></section></main>
+<footer><div class="st" id="st"></div>
+<button id="reset">Reset</button><button class="g" id="copy">Copy my marks</button></footer>
+<dialog id="dlg"><div class="dh">Paste this to Sparks on Telegram</div><pre id="out"></pre>
+<div class="df"><button id="cp2">Copy</button><button id="cl">Close</button></div></dialog>
+<script>
+const KEY='gbp_attr_marks_v1';
+const marks=JSON.parse(localStorage.getItem(KEY)||'{}');
+const rows=[...document.querySelectorAll('.row')];
+const save=()=>{localStorage.setItem(KEY,JSON.stringify(marks));status()};
+function paint(row){
+  const id=row.dataset.id, m=marks[id];
+  row.classList.toggle('touched',!!m);
+  row.querySelectorAll('.b').forEach(b=>b.classList.toggle('sel',!!m&&m.v===b.dataset.v));
+  const tx=row.querySelector('.tx');
+  tx.hidden=!(m&&m.v==='CHANGE');
+  if(m&&m.t!=null)tx.value=m.t;
+  if(m&&m.c!=null)row.querySelector('.cm').value=m.c;
+}
+rows.forEach(row=>{
+  row.querySelectorAll('.b').forEach(b=>b.onclick=()=>{
+    const id=row.dataset.id;
+    if(marks[id]&&marks[id].v===b.dataset.v)delete marks[id];
+    else marks[id]={...(marks[id]||{}),v:b.dataset.v};
+    paint(row);save();
+  });
+  row.querySelector('.tx').oninput=e=>{if(marks[row.dataset.id]){marks[row.dataset.id].t=e.target.value;save()}};
+  row.querySelector('.cm').oninput=e=>{if(marks[row.dataset.id]){marks[row.dataset.id].c=e.target.value;save()}};
+  paint(row);
+});
+let F='all';
+document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{
+  F=b.dataset.f;
+  document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));
+  apply();
+});
+function apply(){
+  rows.forEach(r=>{
+    const k=r.dataset.kind,m=!!marks[r.dataset.id];
+    const show=F==='all'||(F==='todo'?!m:F==='marked'?m:k===F);
+    r.style.display=show?'':'none';
+  });
+  document.querySelectorAll('section').forEach(s=>{
+    s.style.display=[...s.querySelectorAll('.row')].some(r=>r.style.display!=='none')?'':'none';
+  });
+}
+function status(){
+  const t=Object.keys(marks).length;
+  const diff=rows.filter(r=>{const m=marks[r.dataset.id];if(!m)return false;
+    if(r.dataset.bool==='1')return m.v!==({'YES':'YES','NO':'NO'}[r.dataset.cur]||'EMPTY_NOPE')&&!(m.v==='EMPTY'&&r.dataset.cur==='not set');
+    return m.v!=='KEEP';}).length;
+  document.getElementById('st').textContent=t+' of 88 marked, '+diff+' of those are a change from what Google has now';
+}
+document.getElementById('reset').onclick=()=>{
+  if(!confirm('Clear every mark on this device?'))return;
+  for(const k in marks)delete marks[k];localStorage.removeItem(KEY);rows.forEach(paint);apply();status();
+};
+function build(){
+  const chg=[],same=[],notes=[];
+  rows.forEach(r=>{
+    const id=r.dataset.id,m=marks[id];if(!m)return;
+    const cur=r.dataset.cur;
+    let want=m.v;
+    if(r.dataset.bool==='1'){want=m.v==='EMPTY'?'leave empty':m.v;}
+    else if(m.v==='CHANGE')want='change to: '+(m.t||'(blank)');
+    else if(m.v==='CLEAR')want='clear it';
+    else want='keep as is';
+    const line=id+' : now '+cur+' -> '+want+(m.c?'   ['+m.c+']':'');
+    const isSame=(r.dataset.bool==='1'&&((m.v==='YES'&&cur==='YES')||(m.v==='NO'&&cur==='NO')||(m.v==='EMPTY'&&cur==='not set')))||(r.dataset.bool!=='1'&&m.v==='KEEP');
+    (isSame?same:chg).push(line);
+    if(m.c&&isSame)notes.push(id+' : '+m.c);
+  });
+  let s='GBP ATTRIBUTE MARKS, '+new Date().toLocaleString('en-ZA')+'\n';
+  s+='Marked '+Object.keys(marks).length+' of 88\n';
+  s+='\nCHANGE ('+chg.length+')\n'+(chg.length?chg.join('\n'):'none');
+  s+='\n\nCONFIRMED AS IS ('+same.length+')\n'+(same.length?same.join('\n'):'none');
+  const un=rows.filter(r=>!marks[r.dataset.id]&&['change','verify','ask'].includes(r.dataset.kind)).map(r=>r.dataset.id);
+  if(un.length)s+='\n\nSTILL UNMARKED THAT I FLAGGED ('+un.length+')\n'+un.join(', ');
+  return s;
+}
+document.getElementById('copy').onclick=()=>{
+  document.getElementById('out').textContent=build();
+  document.getElementById('dlg').showModal();
+};
+document.getElementById('cp2').onclick=async()=>{
+  const t=document.getElementById('out').textContent;
+  try{await navigator.clipboard.writeText(t);document.getElementById('cp2').textContent='Copied';
+    setTimeout(()=>document.getElementById('cp2').textContent='Copy',1500);}
+  catch(e){const r=document.createRange();r.selectNodeContents(document.getElementById('out'));
+    getSelection().removeAllRanges();getSelection().addRange(r);}
+};
+document.getElementById('cl').onclick=()=>document.getElementById('dlg').close();
+apply();status();
+</script></body></html>
