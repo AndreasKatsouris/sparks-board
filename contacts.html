@@ -1,0 +1,324 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Contacts to capture</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font:16px/1.45 -apple-system,"Helvetica Neue",Helvetica,Arial,sans-serif;background:#eef2f4;color:#13293d}
+header{background:#003A70;color:#E5ECED;padding:18px 16px 16px}
+h1{margin:0 0 4px;font-size:19px;letter-spacing:.2px}
+.sub{font-size:13px;opacity:.82}
+.counts{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.counts span{background:rgba(255,255,255,.12);border-radius:20px;padding:4px 10px;font-size:12px}
+.how{margin:0;padding:12px 16px;background:#fff;border-bottom:1px solid #d7dfe4;font-size:13.5px;color:#2E5D8A}
+.priv{margin:0;padding:10px 16px;background:#f3f9f5;border-bottom:1px solid #cfe3d6;font-size:13px;color:#245c3d}
+.filters{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid #d7dfe4;padding:8px 10px;display:flex;gap:6px;overflow-x:auto}
+.filters button{flex:0 0 auto;border:1px solid #c3ced6;background:#fff;color:#2E5D8A;border-radius:18px;padding:6px 12px;font-size:13px;font-weight:600;white-space:nowrap}
+.filters button.on{background:#003A70;color:#fff;border-color:#003A70}
+main{padding:10px 10px 160px;max-width:760px;margin:0 auto}
+section h2{font-size:13px;text-transform:uppercase;letter-spacing:.9px;color:#5d7285;margin:22px 4px 6px}
+.gc{background:#dbe3e8;color:#5d7285;border-radius:10px;padding:1px 7px;font-size:11px;margin-left:6px}
+.ask{margin:0 4px 9px;font-size:12.5px;color:#7b8b98;line-height:1.35}
+.row{background:#fff;border:1px solid #dde4e9;border-left:5px solid #c3ced6;border-radius:10px;padding:11px 12px;margin-bottom:8px}
+.row[data-p="1"]{border-left-color:#2E5D8A}
+.row[data-sparks="1"]{border-left-color:#b9c4cc;background:#f7f9fa}
+.row.filled{border-left-color:#2e7d52}
+.row.skipped{border-left-color:#b9c4cc;opacity:.62}
+.rh{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.nm{font-weight:700;font-size:15.5px}
+.id{display:block;font:11.5px ui-monospace,Menlo,monospace;color:#8595a2;font-weight:400;margin-top:2px}
+.pb{flex:0 0 auto;border-radius:20px;padding:2px 9px;font-size:11px;font-weight:700;background:#e9f1fa;color:#1c4a7a}
+.pb.p2{background:#eef1f3;color:#7b8b98}
+.hint{margin:7px 0 0;font-size:13px;padding:7px 9px;border-radius:7px;background:#f3f6f8;color:#3c5466}
+.fields{margin-top:9px}
+.fl{display:block;margin-bottom:7px}
+.fl span{display:block;font-size:11.5px;text-transform:uppercase;letter-spacing:.6px;color:#7b8b98;margin-bottom:3px}
+.fi{width:100%;padding:10px;border:1px solid #c3ced6;border-radius:8px;font:15px inherit;resize:vertical;background:#fafcfd}
+.fi:focus{outline:2px solid #2E5D8A;outline-offset:-1px;background:#fff}
+.row.skipped .fields{display:none}
+.ract{display:flex;align-items:center;gap:10px;margin-top:4px}
+.sk{border:1px solid #c3ced6;background:#fff;color:#7b8b98;border-radius:8px;padding:7px 11px;font-size:12.5px;font-weight:600}
+.row.skipped .sk{background:#5d7285;border-color:#5d7285;color:#fff}
+.done{font-size:12px;color:#2e7d52;font-weight:700}
+footer{position:fixed;bottom:0;left:0;right:0;background:#003A70;color:#fff;padding:10px 12px;display:flex;gap:8px;align-items:center;box-shadow:0 -2px 10px rgba(0,0,0,.2)}
+footer .st{flex:1;font-size:12.5px;line-height:1.3}
+footer button{border:0;border-radius:8px;padding:11px 13px;font-size:13px;font-weight:700;background:#E5ECED;color:#003A70}
+footer button.g{background:#2e7d52;color:#fff}
+dialog{border:0;border-radius:12px;padding:0;width:92%;max-width:640px}
+dialog .dh{background:#003A70;color:#fff;padding:12px 14px;font-weight:700;font-size:14px}
+dialog pre{margin:0;padding:14px;white-space:pre-wrap;font:12.5px ui-monospace,Menlo,monospace;max-height:58vh;overflow:auto}
+dialog .df{padding:10px 14px;display:flex;gap:8px;justify-content:flex-end;border-top:1px solid #e3e9ed}
+dialog .df button{border:0;border-radius:8px;padding:10px 14px;font-weight:700;background:#003A70;color:#fff}
+</style></head><body>
+<header>
+<h1>Contacts to capture</h1>
+<div class="sub">Sparks Hospitality Group &middot; 25 items, 22 of them yours to fill in<br>Built 8 October 2026 from the escalation routing gaps</div>
+<div class="counts"><span>22 for you</span><span>17 needed first</span><span>5 blocks</span></div>
+</header>
+<p class="priv"><b>Nothing you type here leaves your phone.</b> This page has no server behind it. What you fill in is saved in this browser only, so you can close it and come back. It reaches me when you tap <b>Copy what I have</b> and paste it to me on Telegram.</p>
+<p class="how">Fill in what you know, leave the rest blank. If a line genuinely has no answer, tap <b>Nothing to put here</b> so I stop chasing it. The blocks are grouped by who to ask, so each one goes out as a single request. P1 means I would need it this month if something went wrong.</p>
+<div class="filters">
+<button data-f="all" class="on">All 25</button>
+<button data-f="p1">Needed first 17</button>
+<button data-f="todo">Not done yet</button>
+<button data-f="filled">Filled in</button>
+<button data-f="blk:A">A. Ocean Basket HQ</button>
+<button data-f="blk:B">B. Insurance</button>
+<button data-f="blk:C">C. The Grove Mall</button>
+<button data-f="blk:D">D. Your own appointments</button>
+<button data-f="blk:E">E. Nothing needed from you</button>
+</div>
+<main><section data-blk="A">
+<h2>A. Ocean Basket HQ<span class="gc">5</span></h2>
+<p class="ask">Ask Ocean Basket HQ. One email covers all five.</p><div class="row" data-id="A1" data-blk="A" data-p="1">
+  <div class="rh"><div class="nm">After-hours mobile for one HQ person who can act<span class="id">A1</span></div>
+  <span class="pb p1">P1</span></div>
+  <p class="hint">One name is enough, as long as that person can actually make a call at 21h00.</p>
+  <div class="fields"><label class="fl"><span>Name</span><input class="fi" data-n="0" data-l="Name" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Role</span><input class="fi" data-n="1" data-l="Role" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Mobile</span><input class="fi" data-n="2" data-l="Mobile" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label></div>
+  <div class="ract"><button class="sk" type="button">Nothing to put here</button><span class="done"></span></div>
+</div><div class="row" data-id="A2" data-blk="A" data-p="1">
+  <div class="rh"><div class="nm">Digistics: named account manager<span class="id">A2</span></div>
+  <span class="pb p1">P1</span></div>
+  <p class="hint">Plus the number to ring on a short or failed delivery before the store opens.</p>
+  <div class="fields"><label class="fl"><span>Account manager</span><input class="fi" data-n="0" data-l="Account manager" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Direct email</span><input class="fi" data-n="1" data-l="Direct email" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Mobile</span><input class="fi" data-n="2" data-l="Mobile" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>After-hours / delivery desk number</span><input class="fi" data-n="3" data-l="After-hours / delivery desk number" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label></div>
+  <div class="ract"><button class="sk" type="button">Nothing to put here</button><span class="done"></span></div>
+</div><div class="row" data-id="A3" data-blk="A" data-p="1">
+  <div class="rh"><div class="nm">The generic HQ mailbox, if there is one<span class="id">A3</span></div>
+  <span class="pb p1">P1</span></div>
+  <p class="hint">support@oceanbasket.com bounced on 8 October, so it does not exist. If there is no shared mailbox at all, say so and I will stop looking for one.</p>
+  <div class="fields"><label class="fl"><span>Shared mailbox address, or &quot;there is none&quot;</span><input class="fi" data-n="0" data-l="Shared mailbox address, or &quot;there is none&quot;" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label></div>
+  <div class="ract"><button class="sk" type="button">Nothing to put here</button><span class="done"></span></div>
+</div><div class="row" data-id="A4" data-blk="A" data-p="2">
+  <div class="rh"><div class="nm">A named contact per function<span class="id">A4</span></div>
+  <span class="pb p2">P2</span></div>
+  <p class="hint">Name and email against each. Leave a line blank if there is nobody.</p>
+  <div class="fields"><label class="fl"><span>Supply chain</span><input class="fi" data-n="0" data-l="Supply chain" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Legal</span><input class="fi" data-n="1" data-l="Legal" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Property and leasing</span><input class="fi" data-n="2" data-l="Property and leasing" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Training</span><input class="fi" data-n="3" data-l="Training" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Marketing and artwork</span><input class="fi" data-n="4" data-l="Marketing and artwork" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>IT and systems</span><input class="fi" data-n="5" data-l="IT and systems" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label></div>
+  <div class="ract"><button class="sk" type="button">Nothing to put here</button><span class="done"></span></div>
+</div><div class="row" data-id="A5" data-blk="A" data-p="2">
+  <div class="rh"><div class="nm">Who sits above franchise ops on a franchisee matter<span class="id">A5</span></div>
+  <span class="pb p2">P2</span></div>
+  <p class="hint">Partly answered already: Michael Botes, michaelb@oceanbasket.com, is the assistant. That is a second route into the same desk, not the level above it.</p>
+  <div class="fields"><label class="fl"><span>Name</span><input class="fi" data-n="0" data-l="Name" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Role</span><input class="fi" data-n="1" data-l="Role" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Email</span><input class="fi" data-n="2" data-l="Email" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label></div>
+  <div class="ract"><button class="sk" type="button">Nothing to put here</button><span class="done"></span></div>
+</div></section><section data-blk="B">
+<h2>B. Insurance<span class="gc">6</span></h2>
+<p class="ask">Ask the broker. This whole block goes in one email, and the surge claim is the moment to send it.</p><div class="row" data-id="B6" data-blk="B" data-p="1">
+  <div class="rh"><div class="nm">Insurer, policy number, policy period<span class="id">B6</span></div>
+  <span class="pb p1">P1</span></div>
+  
+  <div class="fields"><label class="fl"><span>Insurer</span><input class="fi" data-n="0" data-l="Insurer" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Policy number</span><input class="fi" data-n="1" data-l="Policy number" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Period (from / to)</span><input class="fi" data-n="2" data-l="Period (from / to)" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label></div>
+  <div class="ract"><button class="sk" type="button">Nothing to put here</button><span class="done"></span></div>
+</div><div class="row" data-id="B7" data-blk="B" data-p="1">
+  <div class="rh"><div class="nm">Sections and sums insured<span class="id">B7</span></div>
+  <span class="pb p1">P1</span></div>
+  <p class="hint">Buildings and contents, stock, deterioration of stock, business interruption, public liability, money, glass, machinery breakdown.</p>
+  <div class="fields"><label class="fl"><span>Sections and sums</span><textarea class="fi" data-n="0" data-l="Sections and sums" rows="2" placeholder="leave blank if you do not have it"></textarea></label></div>
+  <div class="ract"><button class="sk" type="button">Nothing to put here</button><span class="done"></span></div>
+</div><div class="row" data-id="B8" data-blk="B" data-p="1">
+  <div class="rh"><div class="nm">Excess per section<span class="id">B8</span></div>
+  <span class="pb p1">P1</span></div>
+  <p class="hint">A small repair against a large excess is not worth claiming, so this one changes what we even report.</p>
+  <div class="fields"><label class="fl"><span>Excess per section</span><textarea class="fi" data-n="0" data-l="Excess per section" rows="2" placeholder="leave blank if you do not have it"></textarea></label></div>
+  <div class="ract"><button class="sk" type="button">Nothing to put here</button><span class="done"></span></div>
+</div><div class="row" data-id="B9" data-blk="B" data-p="1">
+  <div class="rh"><div class="nm">Notification window<span class="id">B9</span></div>
+  <span class="pb p1">P1</span></div>
+  <p class="hint">How many days we have to report a loss. I want this as an SLA, not an estimate.</p>
+  <div class="fields"><label class="fl"><span>Window</span><input class="fi" data-n="0" data-l="Window" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label></div>
+  <div class="ract"><button class="sk" type="button">Nothing to put here</button><span class="done"></span></div>
+</div><div class="row" data-id="B10" data-blk="B" data-p="1">
+  <div class="rh"><div class="nm">After-hours claims and emergency assistance numbers<span class="id">B10</span></div>
+  <span class="pb p1">P1</span></div>
+  
+  <div class="fields"><label class="fl"><span>Claims line</span><input class="fi" data-n="0" data-l="Claims line" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Emergency assistance line</span><input class="fi" data-n="1" data-l="Emergency assistance line" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label></div>
+  <div class="ract"><button class="sk" type="button">Nothing to put here</button><span class="done"></span></div>
+</div><div class="row" data-id="B11" data-blk="B" data-p="1">
+  <div class="rh"><div class="nm">Which sites the policy covers<span class="id">B11</span></div>
+  <span class="pb p1">P1</span></div>
+  <p class="hint">All four, or The Grove only. If the others sit on separate policies I need each one.</p>
+  <div class="fields"><label class="fl"><span>Sites covered</span><textarea class="fi" data-n="0" data-l="Sites covered" rows="2" placeholder="leave blank if you do not have it"></textarea></label></div>
+  <div class="ract"><button class="sk" type="button">Nothing to put here</button><span class="done"></span></div>
+</div></section><section data-blk="C">
+<h2>C. The Grove Mall<span class="gc">4</span></h2>
+<p class="ask">Ask centre management.</p><div class="row" data-id="C12" data-blk="C" data-p="1">
+  <div class="rh"><div class="nm">Centre management 24 hour emergency number<span class="id">C12</span></div>
+  <span class="pb p1">P1</span></div>
+  
+  <div class="fields"><label class="fl"><span>Number</span><input class="fi" data-n="0" data-l="Number" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label></div>
+  <div class="ract"><button class="sk" type="button">Nothing to put here</button><span class="done"></span></div>
+</div><div class="row" data-id="C13" data-blk="C" data-p="1">
+  <div class="rh"><div class="nm">Security control room number<span class="id">C13</span></div>
+  <span class="pb p1">P1</span></div>
+  
+  <div class="fields"><label class="fl"><span>Number</span><input class="fi" data-n="0" data-l="Number" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label></div>
+  <div class="ract"><button class="sk" type="button">Nothing to put here</button><span class="done"></span></div>
+</div><div class="row" data-id="C14" data-blk="C" data-p="1">
+  <div class="rh"><div class="nm">Who to call for a power, water or access failure after hours<span class="id">C14</span></div>
+  <span class="pb p1">P1</span></div>
+  <p class="hint">And what response we are entitled to, because that decides whether we wait or whether we close.</p>
+  <div class="fields"><label class="fl"><span>Name / desk</span><input class="fi" data-n="0" data-l="Name / desk" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Number</span><input class="fi" data-n="1" data-l="Number" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Response we are entitled to</span><textarea class="fi" data-n="2" data-l="Response we are entitled to" rows="2" placeholder="leave blank if you do not have it"></textarea></label></div>
+  <div class="ract"><button class="sk" type="button">Nothing to put here</button><span class="done"></span></div>
+</div><div class="row" data-id="C15" data-blk="C" data-p="2">
+  <div class="rh"><div class="nm">A named landlord contact<span class="id">C15</span></div>
+  <span class="pb p2">P2</span></div>
+  <p class="hint">Also needed for the 2027 revamp contribution case.</p>
+  <div class="fields"><label class="fl"><span>Name</span><input class="fi" data-n="0" data-l="Name" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Role</span><input class="fi" data-n="1" data-l="Role" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Email</span><input class="fi" data-n="2" data-l="Email" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Phone</span><input class="fi" data-n="3" data-l="Phone" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label></div>
+  <div class="ract"><button class="sk" type="button">Nothing to put here</button><span class="done"></span></div>
+</div></section><section data-blk="D">
+<h2>D. Your own appointments<span class="gc">7</span></h2>
+<p class="ask">Nobody to ask. These are decisions, and until you make them the line is blank.</p><div class="row" data-id="D16" data-blk="D" data-p="1">
+  <div class="rh"><div class="nm">Attorney, commercial and dispute<span class="id">D16</span></div>
+  <span class="pb p1">P1</span></div>
+  
+  <div class="fields"><label class="fl"><span>Firm</span><input class="fi" data-n="0" data-l="Firm" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Name</span><input class="fi" data-n="1" data-l="Name" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Email</span><input class="fi" data-n="2" data-l="Email" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Phone</span><input class="fi" data-n="3" data-l="Phone" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label></div>
+  <div class="ract"><button class="sk" type="button">Nothing to put here</button><span class="done"></span></div>
+</div><div class="row" data-id="D17" data-blk="D" data-p="1">
+  <div class="rh"><div class="nm">Labour or IR adviser, or a CCMA representative<span class="id">D17</span></div>
+  <span class="pb p1">P1</span></div>
+  
+  <div class="fields"><label class="fl"><span>Firm</span><input class="fi" data-n="0" data-l="Firm" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Name</span><input class="fi" data-n="1" data-l="Name" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Email</span><input class="fi" data-n="2" data-l="Email" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Phone</span><input class="fi" data-n="3" data-l="Phone" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label></div>
+  <div class="ract"><button class="sk" type="button">Nothing to put here</button><span class="done"></span></div>
+</div><div class="row" data-id="D18" data-blk="D" data-p="1">
+  <div class="rh"><div class="nm">Injury on duty<span class="id">D18</span></div>
+  <span class="pb p1">P1</span></div>
+  <p class="hint">Statutory deadlines attach to an IOD, so all three parts matter.</p>
+  <div class="fields"><label class="fl"><span>COID registration number</span><input class="fi" data-n="0" data-l="COID registration number" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Submission route</span><input class="fi" data-n="1" data-l="Submission route" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Who completes the W.Cl.2</span><input class="fi" data-n="2" data-l="Who completes the W.Cl.2" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label></div>
+  <div class="ract"><button class="sk" type="button">Nothing to put here</button><span class="done"></span></div>
+</div><div class="row" data-id="D19" data-blk="D" data-p="1">
+  <div class="rh"><div class="nm">Armed response, per site<span class="id">D19</span></div>
+  <span class="pb p1">P1</span></div>
+  <p class="hint">Company and account number for each site you use one at.</p>
+  <div class="fields"><label class="fl"><span>The Grove</span><input class="fi" data-n="0" data-l="The Grove" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Brits</span><input class="fi" data-n="1" data-l="Brits" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Gordons Bay</span><input class="fi" data-n="2" data-l="Gordons Bay" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Strand</span><input class="fi" data-n="3" data-l="Strand" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>After-hours control room number</span><input class="fi" data-n="4" data-l="After-hours control room number" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label></div>
+  <div class="ract"><button class="sk" type="button">Nothing to put here</button><span class="done"></span></div>
+</div><div class="row" data-id="D20" data-blk="D" data-p="1">
+  <div class="rh"><div class="nm">Standing refrigeration and kitchen equipment contractor<span class="id">D20</span></div>
+  <span class="pb p1">P1</span></div>
+  <p class="hint">Naming a standing contractor is a decision, not a lookup. The last job was a one-off whose invoice is still in dispute.</p>
+  <div class="fields"><label class="fl"><span>Company</span><input class="fi" data-n="0" data-l="Company" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Name</span><input class="fi" data-n="1" data-l="Name" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Phone</span><input class="fi" data-n="2" data-l="Phone" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>After-hours call-out number</span><input class="fi" data-n="3" data-l="After-hours call-out number" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label></div>
+  <div class="ract"><button class="sk" type="button">Nothing to put here</button><span class="done"></span></div>
+</div><div class="row" data-id="D21" data-blk="D" data-p="2">
+  <div class="rh"><div class="nm">Plumber and electrician with after-hours call-out<span class="id">D21</span></div>
+  <span class="pb p2">P2</span></div>
+  
+  <div class="fields"><label class="fl"><span>Plumber</span><input class="fi" data-n="0" data-l="Plumber" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Plumber after-hours</span><input class="fi" data-n="1" data-l="Plumber after-hours" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Electrician</span><input class="fi" data-n="2" data-l="Electrician" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Electrician after-hours</span><input class="fi" data-n="3" data-l="Electrician after-hours" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label></div>
+  <div class="ract"><button class="sk" type="button">Nothing to put here</button><span class="done"></span></div>
+</div><div class="row" data-id="D22" data-blk="D" data-p="2">
+  <div class="rh"><div class="nm">Accountant or bookkeeper, and the SARS practitioner<span class="id">D22</span></div>
+  <span class="pb p2">P2</span></div>
+  
+  <div class="fields"><label class="fl"><span>Accountant / bookkeeper</span><input class="fi" data-n="0" data-l="Accountant / bookkeeper" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Email</span><input class="fi" data-n="1" data-l="Email" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Phone</span><input class="fi" data-n="2" data-l="Phone" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>SARS practitioner</span><input class="fi" data-n="3" data-l="SARS practitioner" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Practitioner contact</span><input class="fi" data-n="4" data-l="Practitioner contact" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label></div>
+  <div class="ract"><button class="sk" type="button">Nothing to put here</button><span class="done"></span></div>
+</div></section><section data-blk="E">
+<h2>E. Nothing needed from you<span class="gc">3</span></h2>
+<p class="ask">I am pulling these myself. They are listed so you can see the whole set, not because I need you to fill them in.</p><div class="row" data-id="E23" data-blk="E" data-p="2" data-sparks="1">
+  <div class="rh"><div class="nm">Canopy cleaning contractor contact<span class="id">E23</span></div>
+  <span class="pb p2">P2</span></div>
+  <p class="hint">Sitting in an email from August. I pull it.</p>
+  <div class="fields"><label class="fl"><span>Anything you already have</span><input class="fi" data-n="0" data-l="Anything you already have" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label></div>
+  <div class="ract"><button class="sk" type="button">Nothing to put here</button><span class="done"></span></div>
+</div><div class="row" data-id="E24" data-blk="E" data-p="2" data-sparks="1">
+  <div class="rh"><div class="nm">Pilot support engineer email<span class="id">E24</span></div>
+  <span class="pb p2">P2</span></div>
+  <p class="hint">Open since 12 August. I will ask through the systems contact.</p>
+  <div class="fields"><label class="fl"><span>Anything you already have</span><input class="fi" data-n="0" data-l="Anything you already have" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label></div>
+  <div class="ract"><button class="sk" type="button">Nothing to put here</button><span class="done"></span></div>
+</div><div class="row" data-id="E25" data-blk="E" data-p="1" data-sparks="1">
+  <div class="rh"><div class="nm">Local SAPS station, fire station, and the environmental health practitioner<span class="id">E25</span></div>
+  <span class="pb p1">P1</span></div>
+  <p class="hint">The inspector is the weak one. If the practitioner left a card at the last visit, the store manager may still have it.</p>
+  <div class="fields"><label class="fl"><span>SAPS station</span><input class="fi" data-n="0" data-l="SAPS station" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Fire station</span><input class="fi" data-n="1" data-l="Fire station" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label><label class="fl"><span>Environmental health practitioner</span><input class="fi" data-n="2" data-l="Environmental health practitioner" type="text" autocomplete="off" placeholder="leave blank if you do not have it"></label></div>
+  <div class="ract"><button class="sk" type="button">Nothing to put here</button><span class="done"></span></div>
+</div></section></main>
+<footer><div class="st" id="st"></div>
+<button id="reset">Reset</button><button class="g" id="copy">Copy what I have</button></footer>
+<dialog id="dlg"><div class="dh">Paste this to Sparks on Telegram</div><pre id="out"></pre>
+<div class="df"><button id="cp2">Copy</button><button id="cl">Close</button></div></dialog>
+<script>
+const KEY='sparks_contacts_v1';
+const data=JSON.parse(localStorage.getItem(KEY)||'{}');
+const rows=[...document.querySelectorAll('.row')];
+const vals=r=>[...r.querySelectorAll('.fi')];
+const save=()=>{localStorage.setItem(KEY,JSON.stringify(data));status()};
+function paint(r){
+  const id=r.dataset.id, d=data[id]||{};
+  vals(r).forEach(i=>{if(d.v&&d.v[i.dataset.n]!=null)i.value=d.v[i.dataset.n]});
+  const any=vals(r).some(i=>i.value.trim()!=='');
+  r.classList.toggle('skipped',!!d.skip);
+  r.classList.toggle('filled',any&&!d.skip);
+  r.querySelector('.done').textContent=d.skip?'marked as nothing to put here':(any?'saved':'');
+}
+rows.forEach(r=>{
+  const id=r.dataset.id;
+  vals(r).forEach(i=>i.oninput=()=>{
+    data[id]=data[id]||{};data[id].v=data[id].v||{};data[id].v[i.dataset.n]=i.value;
+    if(i.value.trim()!=='')delete data[id].skip;
+    paint(r);save();
+  });
+  r.querySelector('.sk').onclick=()=>{
+    data[id]=data[id]||{};
+    if(data[id].skip)delete data[id].skip;else data[id].skip=1;
+    paint(r);save();apply();
+  };
+  paint(r);
+});
+let F='all';
+document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{
+  F=b.dataset.f;
+  document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));
+  apply();
+});
+const settled=r=>{const d=data[r.dataset.id]||{};return !!d.skip||vals(r).some(i=>i.value.trim()!=='')};
+function apply(){
+  rows.forEach(r=>{
+    let show=true;
+    if(F==='p1')show=r.dataset.p==='1'&&r.dataset.sparks!=='1';
+    else if(F==='todo')show=!settled(r)&&r.dataset.sparks!=='1';
+    else if(F==='filled')show=settled(r);
+    else if(F.startsWith('blk:'))show=r.dataset.blk===F.slice(4);
+    r.style.display=show?'':'none';
+  });
+  document.querySelectorAll('section').forEach(s=>{
+    s.style.display=[...s.querySelectorAll('.row')].some(r=>r.style.display!=='none')?'':'none';
+  });
+}
+function status(){
+  const mine=rows.filter(r=>r.dataset.sparks!=='1');
+  const done=mine.filter(settled).length;
+  const p1=mine.filter(r=>r.dataset.p==='1');
+  document.getElementById('st').textContent=done+' of '+mine.length+' settled, '+p1.filter(settled).length+' of '+p1.length+' of the first-priority ones';
+}
+document.getElementById('reset').onclick=()=>{
+  if(!confirm('Clear everything you have typed on this device?'))return;
+  for(const k in data)delete data[k];localStorage.removeItem(KEY);
+  rows.forEach(r=>{vals(r).forEach(i=>i.value='');paint(r)});apply();status();
+};
+function build(){
+  const got=[],none=[],blank=[];
+  rows.forEach(r=>{
+    const id=r.dataset.id,d=data[id]||{};
+    const title=r.querySelector('.nm').childNodes[0].textContent.trim();
+    const filled=vals(r).filter(i=>i.value.trim()!=='').map(i=>'    '+i.dataset.l+': '+i.value.trim().replace(/\s*\n\s*/g,' | '));
+    if(filled.length)got.push(id+'  '+title+'\n'+filled.join('\n'));
+    else if(d.skip)none.push(id+'  '+title);
+    else blank.push(id+'  '+title+(r.dataset.p==='1'?'   (needed first)':''));
+  });
+  let s='CONTACTS I HAVE FILLED IN, '+new Date().toLocaleString('en-ZA')+'\n';
+  s+='\nFILLED IN ('+got.length+')\n'+(got.length?got.join('\n'):'none');
+  s+='\n\nNOTHING TO PUT HERE ('+none.length+')\n'+(none.length?none.join('\n'):'none');
+  s+='\n\nSTILL BLANK ('+blank.length+')\n'+(blank.length?blank.join('\n'):'none');
+  return s;
+}
+document.getElementById('copy').onclick=()=>{
+  document.getElementById('out').textContent=build();
+  document.getElementById('dlg').showModal();
+};
+document.getElementById('cp2').onclick=async()=>{
+  const t=document.getElementById('out').textContent;
+  try{await navigator.clipboard.writeText(t);document.getElementById('cp2').textContent='Copied';
+    setTimeout(()=>document.getElementById('cp2').textContent='Copy',1600);}
+  catch(e){const p=document.getElementById('out');const sel=getSelection();sel.removeAllRanges();
+    const rg=document.createRange();rg.selectNodeContents(p);sel.addRange(rg);}
+};
+document.getElementById('cl').onclick=()=>document.getElementById('dlg').close();
+status();apply();
+</script>
+</body></html>
