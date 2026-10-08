@@ -97,6 +97,14 @@
   .vsw button{flex:1;background:none;border:none;color:var(--dim);border-radius:7px;
     padding:7px 10px;font:600 12.5px/1 inherit;cursor:pointer}
   .vsw button.on{background:var(--panel);color:var(--ink);box-shadow:var(--shadow)}
+  /* Forms are standalone pages, not board views: they live in the Pages repo next to
+     index.html and hold nothing, so they are plain links rather than tabs. */
+  .flk{display:flex;gap:6px;flex-wrap:wrap;margin:0 auto 9px;max-width:760px}
+  .flk a{flex:1 1 auto;text-align:center;text-decoration:none;background:var(--panel2);
+    border:1px solid var(--line);border-radius:9px;color:var(--dim);
+    padding:8px 10px;font:600 12.5px/1 inherit}
+  .flk a:active{color:var(--ink)}
+  .flk a b{color:var(--ink);font-weight:700}
   /* Search deliberately ignores the column tabs: the whole point is finding a card
      whose column he cannot remember, most often one already in Done. */
   .srch{position:relative;max-width:760px;margin:0 auto 9px}
@@ -161,6 +169,10 @@
     <div class="vsw">
       <button id="vboard" class="on" data-view="board">Board</button>
       <button id="vsched" data-view="schedule">Schedule</button>
+    </div>
+    <div class="flk">
+      <a href="contacts.html"><b>Contacts to capture</b> &rsaquo;</a>
+      <a href="attributes.html"><b>Google attributes</b> &rsaquo;</a>
     </div>
     <div class="srch" id="srch">
       <input id="q" type="search" placeholder="Find a card: K059, or any word" autocomplete="off" spellcheck="false">
