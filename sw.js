@@ -33,12 +33,22 @@ self.addEventListener('push', event => {
 
 self.addEventListener('notificationclick', event => {
   event.notification.close();
-  const url = (event.notification.data && event.notification.data.url) || BOARD;
+  const d = event.notification.data || {};
+  const id = d.id || null;
+  // Deep link. The board reads #K027 on load and opens that card's column with the card
+  // expanded. Without it, a push about a card outside For review opened an empty tab and
+  // read as a notification that fired about nothing.
+  const url = (d.url || BOARD) + (id ? '#' + id : '');
   event.waitUntil((async () => {
     const wins = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
     // Reuse the board if it is already open, otherwise he ends up with five copies of it.
     for (const w of wins) {
-      if (w.url.includes('/sparks-board')) { await w.focus(); return; }
+      if (w.url.includes('/sparks-board')) {
+        await w.focus();
+        // An open tab will not re-read the hash, so give it the id directly.
+        if (id) w.postMessage({ type: 'focusCard', id });
+        return;
+      }
     }
     await self.clients.openWindow(url);
   })());
