@@ -1,0 +1,383 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Store walkthrough, The Grove</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font:16px/1.45 -apple-system,"Helvetica Neue",Helvetica,Arial,sans-serif;background:#eef2f4;color:#13293d}
+header{background:#003A70;color:#E5ECED;padding:18px 16px 16px}
+h1{margin:0 0 4px;font-size:19px;letter-spacing:.2px}
+.sub{font-size:13px;opacity:.82}
+.how{margin:0;padding:12px 16px;background:#fff;border-bottom:1px solid #d7dfe4;font-size:13.5px;color:#2E5D8A}
+.filters{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid #d7dfe4;padding:8px 10px;display:flex;gap:6px;overflow-x:auto}
+.filters button{flex:0 0 auto;border:1px solid #c3ced6;background:#fff;color:#2E5D8A;border-radius:18px;padding:6px 12px;font-size:13px;font-weight:600}
+.filters button.on{background:#003A70;color:#fff;border-color:#003A70}
+main{padding:10px 10px 150px;max-width:760px;margin:0 auto}
+section h2{font-size:13px;text-transform:uppercase;letter-spacing:.9px;color:#5d7285;margin:22px 4px 8px}
+.gc{background:#dbe3e8;color:#5d7285;border-radius:10px;padding:1px 7px;font-size:11px;margin-left:4px}
+.row{background:#fff;border:1px solid #dde4e9;border-left:5px solid #dde4e9;border-radius:10px;padding:11px 12px;margin-bottom:8px}
+.row.ok{border-left-color:#2e7d52}
+.row.bad{border-left-color:#c62828}
+.row.na{border-left-color:#b9c4cc}
+.nm{font-weight:700;font-size:15.5px}
+.src{font:11.5px ui-monospace,Menlo,monospace;color:#8595a2;margin-top:2px}
+.ctx{font-size:13px;margin:8px 0 9px;padding:7px 9px;border-radius:7px;background:#f3f6f8;color:#3c5466}
+.btns{display:flex;gap:6px}
+.b{flex:1;padding:12px 4px;border:1px solid #c3ced6;background:#fafcfd;color:#2E5D8A;border-radius:8px;font-size:13px;font-weight:700;letter-spacing:.3px}
+.b.sel[data-v=OK]{background:#2e7d52;border-color:#2e7d52;color:#fff}
+.b.sel[data-v=ISSUE]{background:#c62828;border-color:#c62828;color:#fff}
+.b.sel[data-v="N/A"]{background:#7a8894;border-color:#7a8894;color:#fff}
+.cm{width:100%;margin-top:8px;padding:9px;border:1px solid #c3ced6;border-radius:8px;font:14px inherit;resize:vertical;display:none}
+.row.bad .cm,.row.show .cm{display:block}
+.free{background:#fff;border:1px dashed #b4c2cc;border-radius:10px;padding:10px 12px;margin:2px 0 4px}
+.free label{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.7px;color:#5d7285;margin-bottom:6px}
+.free textarea{width:100%;padding:9px;border:1px solid #c3ced6;border-radius:8px;font:14px inherit;resize:vertical}
+footer{position:fixed;bottom:0;left:0;right:0;background:#003A70;color:#fff;padding:10px 12px;display:flex;gap:8px;align-items:center;box-shadow:0 -2px 10px rgba(0,0,0,.2)}
+footer .st{flex:1;font-size:12.5px;line-height:1.3}
+footer button{border:0;border-radius:8px;padding:11px 13px;font-size:13px;font-weight:700;background:#E5ECED;color:#003A70}
+footer button.g{background:#2e7d52;color:#fff}
+dialog{border:0;border-radius:12px;padding:0;width:92%;max-width:640px}
+dialog .dh{background:#003A70;color:#fff;padding:12px 14px;font-weight:700;font-size:14px}
+dialog pre{margin:0;padding:14px;white-space:pre-wrap;font:12.5px ui-monospace,Menlo,monospace;max-height:58vh;overflow:auto}
+dialog .df{padding:10px 14px;display:flex;gap:8px;justify-content:flex-end;border-top:1px solid #e3e9ed}
+dialog .df button{border:0;border-radius:8px;padding:10px 14px;font-weight:700;background:#003A70;color:#fff}
+.back{display:inline-block;margin-top:10px;color:#9ec4e8;font-size:13px}
+</style></head><body>
+<header>
+<h1>Store walkthrough</h1>
+<div class="sub">Ocean Basket The Grove &middot; 37 checks, ordered the way you walk the building<br>Built 2026/10/09, 11:19:29 SAST</div>
+<a class="back" href="./">&lsaquo; back to the board</a>
+</header>
+<p class="how">Every item here is an open or recently closed action off Daniel's 17 August walkthrough or the LTL audit, plus a few live ones. The grey line under each check is <b>what we were last told</b>, so you are verifying, not discovering. Tap <b>OK</b>, <b>NEEDS FIXING</b> or <b>N/A</b>. NEEDS FIXING opens a note box. Each area also has a free box for anything not on the list. When you are done hit <b>Copy my findings</b> and paste it to me, and I will turn it into cards and chase the owners. Your answers save on this device, so you can close it and come back.</p>
+<div class="filters">
+<button data-f="all" class="on">All 37</button>
+<button data-f="todo">Not done yet</button>
+<button data-f="bad">Needs fixing</button>
+<button data-f="ok">OK</button>
+</div>
+<main><section data-sec="Front of house"><h2>Front of house <span class="gc">4</span></h2><div class="row" data-id="foh-tables" data-label="Table settings correct and complete" data-sec="Front of house">
+  <div class="nm">Table settings correct and complete</div>
+  <div class="src">Daniel 17 Aug N4</div>
+  <div class="ctx">Side plates part-issued, 36 more still needed to finish the dull range.</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="row" data-id="foh-chairs" data-label="Chairs painted and touched up" data-sec="Front of house">
+  <div class="nm">Chairs painted and touched up</div>
+  <div class="src">Daniel 17 Aug N5 / A2</div>
+  <div class="ctx">Still OPEN on the tracker. Due was 31 Aug.</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="row" data-id="foh-manager" data-label="A manager is visibly on the floor" data-sec="Front of house">
+  <div class="nm">A manager is visibly on the floor</div>
+  <div class="src">Floor standards brief</div>
+  <div class="ctx">Manager-on-floor rule. Service complaints tag no-manager as a theme.</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="row" data-id="foh-seq" data-label="Sequence of service being followed" data-sec="Front of house">
+  <div class="nm">Sequence of service being followed</div>
+  <div class="src">ob_service_tracker</div>
+  <div class="ctx">Our most common complaint theme after no-manager.</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="free"><label>Anything else in front of house</label>
+  <textarea class="fx" data-sec="Front of house" placeholder="anything not on the list" rows="2"></textarea></div></section><section data-sec="Bar and deli"><h2>Bar and deli <span class="gc">4</span></h2><div class="row" data-id="bar-globes" data-label="Bar globes are warm white per spec" data-sec="Bar and deli">
+  <div class="nm">Bar globes are warm white per spec</div>
+  <div class="src">Daniel 17 Aug A4</div>
+  <div class="ctx">Assigned to FOH, no close-out reported.</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="row" data-id="bar-fridge-handle" data-label="Under-counter fridge handle repaired" data-sec="Bar and deli">
+  <div class="nm">Under-counter fridge handle repaired</div>
+  <div class="src">LTL CA67716 M4</div>
+  <div class="ctx">OPEN. Was not addressed in the 24 Aug reply at all.</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="row" data-id="bar-kegtails" data-label="Kegtails count: how many units on the shelf, by flavour" data-sec="Bar and deli">
+  <div class="nm">Kegtails count: how many units on the shelf, by flavour</div>
+  <div class="src">Card K123</div>
+  <div class="ctx">This is question 1 of the Morgan email. 480 units landed 3 Oct and the menu changes end of month. A count here settles it today.</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="row" data-id="bar-datecode" data-label="Deli products date-coded, FIFO followed" data-sec="Bar and deli">
+  <div class="nm">Deli products date-coded, FIFO followed</div>
+  <div class="src">Daniel 17 Aug C2</div>
+  <div class="ctx">Reported in progress. Sticker labels claimed in daily use.</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="free"><label>Anything else in bar and deli</label>
+  <textarea class="fx" data-sec="Bar and deli" placeholder="anything not on the list" rows="2"></textarea></div></section><section data-sec="Sushi"><h2>Sushi <span class="gc">4</span></h2><div class="row" data-id="sushi-fridge-temp" data-label="Sushi fridge reading 4C or below" data-sec="Sushi">
+  <div class="nm">Sushi fridge reading 4C or below</div>
+  <div class="src">Daniel 17 Aug C1 / N7</div>
+  <div class="ctx">Was 8C. Morgan reported within 4C on 29 Aug with a photo. No technician invoice or COC yet.</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="row" data-id="sushi-datecode" data-label="Sushi prepped product date-coded, FIFO followed" data-sec="Sushi">
+  <div class="nm">Sushi prepped product date-coded, FIFO followed</div>
+  <div class="src">Daniel 17 Aug C2</div>
+  <div class="ctx">Reported in progress.</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="row" data-id="sushi-rice-hold" data-label="Ask how long the rice has been held, and taste it" data-sec="Sushi">
+  <div class="nm">Ask how long the rice has been held, and taste it</div>
+  <div class="src">sushi_rice_test_results</div>
+  <div class="ctx">Both test units dried out at 4 hours. The hold is the fault, not the ratio. Sitting with Morgan.</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="row" data-id="sushi-clean" data-label="Clean as you go being followed, floors included" data-sec="Sushi">
+  <div class="nm">Clean as you go being followed, floors included</div>
+  <div class="src">Daniel 17 Aug N1</div>
+  <div class="ctx">Still OPEN on the tracker.</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="free"><label>Anything else in sushi</label>
+  <textarea class="fx" data-sec="Sushi" placeholder="anything not on the list" rows="2"></textarea></div></section><section data-sec="Grill line"><h2>Grill line <span class="gc">5</span></h2><div class="row" data-id="grill-salamander" data-label="Salamander burner and gas flat-top handles" data-sec="Grill line">
+  <div class="nm">Salamander burner and gas flat-top handles</div>
+  <div class="src">Daniel 17 Aug N3 / A3</div>
+  <div class="ctx">Burner replaced 31 Aug. Flat-top burners were ordered. Have they arrived and been fitted?</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="row" data-id="grill-canopy" data-label="Extraction canopy not leaking oil, fresh-air covers clean" data-sec="Grill line">
+  <div class="nm">Extraction canopy not leaking oil, fresh-air covers clean</div>
+  <div class="src">Daniel 17 Aug N2</div>
+  <div class="ctx">Cert 4208/23 serviced 24 Aug, expires 24 Feb 2027. The cert does not prove the weekly clean is happening.</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="row" data-id="grill-lemon" data-label="Lemon wedges covered with ice" data-sec="Grill line">
+  <div class="nm">Lemon wedges covered with ice</div>
+  <div class="src">LTL CA67716 M1</div>
+  <div class="ctx">OPEN. Never addressed. A Major, and a 30 second fix.</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="row" data-id="grill-swab" data-label="Prep table and knives visibly clean, sanitising routine in use" data-sec="Grill line">
+  <div class="nm">Prep table and knives visibly clean, sanitising routine in use</div>
+  <div class="src">LTL CA67716 MICRO</div>
+  <div class="ctx">Two swab fails last audit. Routine reported implemented.</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="row" data-id="grill-datecode" data-label="Grill-line product date-coded, FIFO followed" data-sec="Grill line">
+  <div class="nm">Grill-line product date-coded, FIFO followed</div>
+  <div class="src">Daniel 17 Aug N6</div>
+  <div class="ctx">Still OPEN on the tracker.</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="free"><label>Anything else in grill line</label>
+  <textarea class="fx" data-sec="Grill line" placeholder="anything not on the list" rows="2"></textarea></div></section><section data-sec="Fryers and oil"><h2>Fryers and oil <span class="gc">3</span></h2><div class="row" data-id="oil-tpm" data-label="Ask for today TPM readings, per vat" data-sec="Fryers and oil">
+  <div class="nm">Ask for today TPM readings, per vat</div>
+  <div class="src">oil_management_research</div>
+  <div class="ctx">House change point 22%, SA legal ceiling 25%. Read at close BEFORE filtering. We do not know how many vats there are: confirm the number while you are there.</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="row" data-id="oil-covered" data-label="Vats covered when not in service" data-sec="Fryers and oil">
+  <div class="nm">Vats covered when not in service</div>
+  <div class="src">oil_management_research</div>
+  <div class="ctx">The single highest-leverage control we have. An uncovered cold vat overnight does more damage than a busy Saturday.</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="row" data-id="oil-temp" data-label="Probe the oil, do not trust the dial" data-sec="Fryers and oil">
+  <div class="nm">Probe the oil, do not trust the dial</div>
+  <div class="src">oil_management_research</div>
+  <div class="ctx">A dial reading 180 with oil at 195 halves oil life invisibly. 190 degrades roughly twice as fast as 180.</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="free"><label>Anything else in fryers and oil</label>
+  <textarea class="fx" data-sec="Fryers and oil" placeholder="anything not on the list" rows="2"></textarea></div></section><section data-sec="Food prep and back kitchen"><h2>Food prep and back kitchen <span class="gc">6</span></h2><div class="row" data-id="prep-floor" data-label="Food-prep floor, sound and easy to clean" data-sec="Food prep and back kitchen">
+  <div class="nm">Food-prep floor, sound and easy to clean</div>
+  <div class="src">LTL CA67716 m1</div>
+  <div class="ctx">OPEN and it is YOURS: Morgan set no date because he is waiting on your call on timing and spend.</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="row" data-id="prep-covered" data-label="All food on display covered by the best available method" data-sec="Food prep and back kitchen">
+  <div class="nm">All food on display covered by the best available method</div>
+  <div class="src">LTL CA67716 M2</div>
+  <div class="ctx">OPEN. Never addressed.</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="row" data-id="prep-shelves" data-label="Rusted shelves in the display fridge replaced" data-sec="Food prep and back kitchen">
+  <div class="nm">Rusted shelves in the display fridge replaced</div>
+  <div class="src">LTL CA67716 M3</div>
+  <div class="ctx">OPEN. Never addressed.</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="row" data-id="prep-handdry" data-label="Paper towel present and stocked at the prep hand-wash basin" data-sec="Food prep and back kitchen">
+  <div class="nm">Paper towel present and stocked at the prep hand-wash basin</div>
+  <div class="src">LTL CA67716 C2</div>
+  <div class="ctx">Reported closed 24 Aug with folded paper towels, no dryer fitted. Verify it is still there.</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="row" data-id="prep-labels" data-label="Every ingredient container labelled with contents and date" data-sec="Food prep and back kitchen">
+  <div class="nm">Every ingredient container labelled with contents and date</div>
+  <div class="src">LTL CA67716 C1</div>
+  <div class="ctx">Reported closed 24 Aug. Verify.</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="row" data-id="prep-portion" data-label="Weigh a 100g and a 200g hake portion" data-sec="Food prep and back kitchen">
+  <div class="nm">Weigh a 100g and a 200g hake portion</div>
+  <div class="src">Daniel 17 Aug C5 / C6</div>
+  <div class="ctx">Were averaging 88,3g and 178,3g against 90 to 110 and 190 to 210. Claimed done, never independently weighed.</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="free"><label>Anything else in food prep and back kitchen</label>
+  <textarea class="fx" data-sec="Food prep and back kitchen" placeholder="anything not on the list" rows="2"></textarea></div></section><section data-sec="Walk-in fridge and freezer"><h2>Walk-in fridge and freezer <span class="gc">4</span></h2><div class="row" data-id="wi-gauge" data-label="Walk-in freezer door display repaired or replaced" data-sec="Walk-in fridge and freezer">
+  <div class="nm">Walk-in freezer door display repaired or replaced</div>
+  <div class="src">Daniel 17 Aug C1</div>
+  <div class="ctx">The -11C reading was a FAULTY GAUGE: internal measured -19,9C. The gauge itself was never fixed, so nobody can read that freezer.</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="row" data-id="wi-temp" data-label="Probe the freezer internally, target -18C or below" data-sec="Walk-in fridge and freezer">
+  <div class="nm">Probe the freezer internally, target -18C or below</div>
+  <div class="src">Daniel 17 Aug C1</div>
+  <div class="ctx">Because the door display cannot be trusted.</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="row" data-id="wi-compressor" data-label="Fridge compressor after the power surge" data-sec="Walk-in fridge and freezer">
+  <div class="nm">Fridge compressor after the power surge</div>
+  <div class="src">insurance_surge_claim_fridge</div>
+  <div class="ctx">Cool Tech quoted R21 739 excl for the replacement. Claim is open with the invoice still to be reissued. Is the unit holding temp in the meantime?</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="row" data-id="wi-datecode" data-label="Walk-in product date-coded, FIFO followed" data-sec="Walk-in fridge and freezer">
+  <div class="nm">Walk-in product date-coded, FIFO followed</div>
+  <div class="src">Daniel 17 Aug C3</div>
+  <div class="ctx">Reported in progress.</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="free"><label>Anything else in walk-in fridge and freezer</label>
+  <textarea class="fx" data-sec="Walk-in fridge and freezer" placeholder="anything not on the list" rows="2"></textarea></div></section><section data-sec="Dry store and receiving"><h2>Dry store and receiving <span class="gc">3</span></h2><div class="row" data-id="dry-datecode" data-label="Dry storeroom date-coded, FIFO followed" data-sec="Dry store and receiving">
+  <div class="nm">Dry storeroom date-coded, FIFO followed</div>
+  <div class="src">Daniel 17 Aug C4</div>
+  <div class="ctx">Reported in progress.</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="row" data-id="dry-variance" data-label="Hake and prawn stock: does the shelf match the book" data-sec="Dry store and receiving">
+  <div class="nm">Hake and prawn stock: does the shelf match the book</div>
+  <div class="src">Daniel 17 Aug B3</div>
+  <div class="ctx">Last variance was hake -35kg and prawns -14kg. Calamari was fine.</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="row" data-id="dry-summer" data-label="Is there room for the summer range coming in" data-sec="Dry store and receiving">
+  <div class="nm">Is there room for the summer range coming in</div>
+  <div class="src">summer_menu_2026</div>
+  <div class="ctx">Changeover is end of October and ten new dishes land. Franchisor email says 28 Oct, the manager course says 29 Oct, so do not quote a date to the team yet.</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="free"><label>Anything else in dry store and receiving</label>
+  <textarea class="fx" data-sec="Dry store and receiving" placeholder="anything not on the list" rows="2"></textarea></div></section><section data-sec="Guest areas and paperwork"><h2>Guest areas and paperwork <span class="gc">4</span></h2><div class="row" data-id="gb-handdry" data-label="Hand-drying in the guest bathroom" data-sec="Guest areas and paperwork">
+  <div class="nm">Hand-drying in the guest bathroom</div>
+  <div class="src">LTL CA67716 M5</div>
+  <div class="ctx">Reported closed 24 Aug with folded paper towels. Verify.</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="row" data-id="pw-certs" data-label="Certificates on the wall and in date" data-sec="Guest areas and paperwork">
+  <div class="nm">Certificates on the wall and in date</div>
+  <div class="src">ccrs_canopy_cert</div>
+  <div class="ctx">Canopy cert 4208/23 expires 24 Feb 2027. Check what else is up there and photograph anything we may not hold a copy of.</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="row" data-id="pw-academy" data-label="Ask Morgan where OB Academy stands" data-sec="Guest areas and paperwork">
+  <div class="nm">Ask Morgan where OB Academy stands</div>
+  <div class="src">ob_academy_completion</div>
+  <div class="ctx">Store 72%, BOH only 34,7%, against a 90% expectation. This is walkthrough item B1.</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="row" data-id="pw-dishwasher" data-label="Dishwasher: any issue to log with the supplier" data-sec="Guest areas and paperwork">
+  <div class="nm">Dishwasher: any issue to log with the supplier</div>
+  <div class="src">gogo_lesson_competency</div>
+  <div class="ctx">The machine is supplier-owned, Food Safety on 011 485 3655. There is no wash or rinse temperature target, so do not let anyone invent one.</div>
+  <div class="btns"><button class="b" data-v="OK">OK</button><button class="b" data-v="ISSUE">NEEDS FIXING</button><button class="b" data-v="N/A">N/A</button></div>
+  <textarea class="cm" placeholder="what you found, and who must fix it" rows="2"></textarea>
+</div><div class="free"><label>Anything else in guest areas and paperwork</label>
+  <textarea class="fx" data-sec="Guest areas and paperwork" placeholder="anything not on the list" rows="2"></textarea></div></section></main>
+<footer><div class="st" id="st"></div>
+<button id="reset">Reset</button><button class="g" id="copy">Copy my findings</button></footer>
+<dialog id="dlg"><div class="dh">Paste this to Sparks on Telegram</div><pre id="out"></pre>
+<div class="df"><button id="cp2">Copy</button><button id="cl">Close</button></div></dialog>
+<script>
+const KEY='grove_walkthrough_v1';
+const st0=JSON.parse(localStorage.getItem(KEY)||'{}');
+const marks=st0.marks||{}, frees=st0.frees||{};
+const rows=[...document.querySelectorAll('.row')];
+const save=()=>{localStorage.setItem(KEY,JSON.stringify({marks,frees,at:new Date().toISOString()}));status()};
+function paint(row){
+  const id=row.dataset.id,m=marks[id];
+  row.classList.toggle('ok',!!m&&m.v==='OK');
+  row.classList.toggle('bad',!!m&&m.v==='ISSUE');
+  row.classList.toggle('na',!!m&&m.v==='N/A');
+  row.querySelectorAll('.b').forEach(b=>b.classList.toggle('sel',!!m&&m.v===b.dataset.v));
+  if(m&&m.c){row.classList.add('show');row.querySelector('.cm').value=m.c;}
+}
+rows.forEach(row=>{
+  row.querySelectorAll('.b').forEach(b=>b.onclick=()=>{
+    const id=row.dataset.id;
+    if(marks[id]&&marks[id].v===b.dataset.v)delete marks[id];
+    else marks[id]={...(marks[id]||{}),v:b.dataset.v};
+    paint(row);save();
+  });
+  row.querySelector('.cm').oninput=e=>{marks[row.dataset.id]={...(marks[row.dataset.id]||{}),c:e.target.value};save()};
+  paint(row);
+});
+document.querySelectorAll('.fx').forEach(t=>{
+  const s=t.dataset.sec;
+  if(frees[s])t.value=frees[s];
+  t.oninput=e=>{frees[s]=e.target.value;save()};
+});
+let F='all';
+document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{
+  F=b.dataset.f;
+  document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));
+  apply();
+});
+function apply(){
+  rows.forEach(r=>{
+    const m=marks[r.dataset.id];
+    const show=F==='all'||(F==='todo'?!m:F==='bad'?(m&&m.v==='ISSUE'):F==='ok'?(m&&m.v==='OK'):true);
+    r.style.display=show?'':'none';
+  });
+  document.querySelectorAll('.free').forEach(f=>{f.style.display=F==='all'?'':'none'});
+  document.querySelectorAll('section').forEach(s=>{
+    const any=[...s.querySelectorAll('.row')].some(r=>r.style.display!=='none');
+    s.style.display=(any||F==='all')?'':'none';
+  });
+}
+function status(){
+  const done=Object.values(marks).filter(m=>m.v).length;
+  const bad=Object.values(marks).filter(m=>m.v==='ISSUE').length;
+  document.getElementById('st').textContent=done+' of 37 checked, '+bad+' needing a fix';
+}
+document.getElementById('reset').onclick=()=>{
+  if(!confirm('Clear this whole walkthrough on this device?'))return;
+  for(const k in marks)delete marks[k];for(const k in frees)delete frees[k];
+  localStorage.removeItem(KEY);rows.forEach(r=>{r.className='row';r.querySelector('.cm').value=''});
+  document.querySelectorAll('.fx').forEach(t=>t.value='');apply();status();
+};
+function build(){
+  const bad=[],ok=[],na=[],extra=[];
+  rows.forEach(r=>{
+    const m=marks[r.dataset.id];if(!m||!m.v)return;
+    const line='['+r.dataset.sec+'] '+r.dataset.label+(m.c?'  >> '+m.c:'');
+    (m.v==='ISSUE'?bad:m.v==='OK'?ok:na).push(line);
+  });
+  for(const s in frees)if((frees[s]||'').trim())extra.push('['+s+'] '+frees[s].trim());
+  const un=rows.filter(r=>!marks[r.dataset.id]||!marks[r.dataset.id].v).map(r=>r.dataset.label);
+  let t='GROVE WALKTHROUGH, '+new Date().toLocaleString('en-ZA')+String.fromCharCode(10);
+  t+='Checked '+(rows.length-un.length)+' of 37'+String.fromCharCode(10);
+  const nl=String.fromCharCode(10);
+  t+=nl+'NEEDS FIXING ('+bad.length+')'+nl+(bad.length?bad.join(nl):'none');
+  if(extra.length)t+=nl+nl+'ALSO FOUND ('+extra.length+')'+nl+extra.join(nl);
+  t+=nl+nl+'OK ('+ok.length+')'+nl+(ok.length?ok.join(nl):'none');
+  if(na.length)t+=nl+nl+'NOT APPLICABLE ('+na.length+')'+nl+na.join(nl);
+  if(un.length)t+=nl+nl+'NOT CHECKED ('+un.length+')'+nl+un.join(', ');
+  return t;
+}
+document.getElementById('copy').onclick=()=>{
+  document.getElementById('out').textContent=build();
+  document.getElementById('dlg').showModal();
+};
+document.getElementById('cp2').onclick=async()=>{
+  const t=document.getElementById('out').textContent;
+  try{await navigator.clipboard.writeText(t);document.getElementById('cp2').textContent='Copied';
+    setTimeout(()=>document.getElementById('cp2').textContent='Copy',1500);}
+  catch(e){const r=document.createRange();r.selectNodeContents(document.getElementById('out'));
+    getSelection().removeAllRanges();getSelection().addRange(r);}
+};
+document.getElementById('cl').onclick=()=>document.getElementById('dlg').close();
+apply();status();
+</script></body></html>
