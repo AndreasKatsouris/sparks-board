@@ -335,6 +335,10 @@ const COLS = [
   { k:'done',     label:'Done' },
 ];
 let cards = {}, active = 'review', base = null;
+// First paint only: land him on the first column that actually has something in it, and
+// honour a #K### deep link from a notification. After that the column is his to choose, so
+// the 20s refresh never moves the page under him mid-sentence.
+let firstPaint = true;
 let view = localStorage.getItem('sparksboard.view') || 'board', sched = null;
 let query = '';
 
@@ -369,6 +373,11 @@ async function load() {
   cards = (await r.json()) || {};
   // The schedule is published by Sparks, not edited here, so a miss is not fatal.
   if (sr.ok) sched = await sr.json();
+  if (firstPaint) {
+    firstPaint = false;
+    const want = cardFromHash();
+    if (!want || !focusCard(want)) landOnFirstBusyColumn();
+  }
   render();
   return true;
 }
@@ -502,6 +511,34 @@ function renderSchedule() {
     `<div class="tid" style="margin:16px 0 0;text-align:center">Published ${new Date(sched.updated).toLocaleString('en-ZA', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' })}</div>`;
 }
 
+// A notification is only worth sending if it lands on the card. The push carries the card
+// id, the service worker turns that into #K027 (or posts it to an already-open tab), and
+// this puts the right column up with the card expanded.
+function cardFromHash() {
+  const h = (location.hash || '').replace(/^#/, '').trim().toUpperCase();
+  return /^[A-Z]*\d+$/.test(h) ? h : null;
+}
+
+function focusCard(id) {
+  const c = cards[id];
+  if (!c) return false;
+  if (view !== 'board') { view = 'board'; localStorage.setItem('sparksboard.view', view); }
+  if (query) { query = ''; $('q').value = ''; $('qx').classList.add('hide'); }
+  active = c.column;
+  openCards.add(id);
+  render();
+  requestAnimationFrame(() => document.querySelector(`[data-card="${id}"]`)?.scrollIntoView({ block: 'center' }));
+  return true;
+}
+
+// Opening on For review when For review is empty is what made a real push look like a dead
+// board: the card was there, overdue, in another column, on a tab he was not looking at.
+function landOnFirstBusyColumn() {
+  const all = Object.values(cards);
+  const hit = COLS.find(c => all.some(x => x.column === c.k));
+  if (hit) active = hit.k;
+}
+
 function render() {
   $('stamp').textContent = new Date().toLocaleString('en-ZA', { weekday:'short', day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
   document.querySelectorAll('[data-view]').forEach(b => b.classList.toggle('on', b.dataset.view === view));
@@ -565,6 +602,18 @@ document.addEventListener('click', e => {
   const btn = e.target.closest('[data-a]');
   if (btn) decide(btn.dataset.id, btn.dataset.a, btn.dataset.l);
 });
+
+window.addEventListener('hashchange', () => { const id = cardFromHash(); if (id) focusCard(id); });
+
+// Tapping a notification while the board is already open does not re-read the URL, so the
+// service worker hands the card id straight to the tab instead.
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.addEventListener('message', async e => {
+    const id = e.data && e.data.type === 'focusCard' && e.data.id;
+    if (!id) return;
+    if (!focusCard(id)) { await load(); focusCard(id); }
+  });
+}
 </script>
 </body>
 </html>
