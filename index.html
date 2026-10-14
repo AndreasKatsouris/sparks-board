@@ -85,6 +85,7 @@
     color:var(--ink);border-radius:9px;padding:10px 12px;font:600 13px/1 inherit;cursor:pointer}
   .acts button.go{background:var(--go);border-color:var(--go);color:#fff}
   .acts button.draft{background:var(--draft);border-color:var(--draft);color:#fff}
+  .acts button.opt{background:none;border-color:var(--line);color:var(--ink)}
   .acts button.no{background:none;border-color:var(--no);color:var(--no-ink)}
   .decided{margin-top:10px;padding:9px 11px;border-radius:9px;background:var(--ok-bg);
     color:var(--ok-ink);font-size:12.5px;border:1px solid var(--ok-line)}
@@ -156,12 +157,13 @@
 
   /* The three decision buttons were three colours, which made colour mean WHICH action
      rather than THAT it is an action. One colour now, weight carries the difference.
-     NOTE: index.html gives .go to option index 0, so the filled button is positional,
-     not a recommendation. That is a separate question, open with Andreas. */
+     The fill means RECOMMENDED and nothing else: it appears only where a card carries a
+     `rec` field (K193). An unmarked option is .opt, outlined in the same accent, because it
+     is still a tap. */
   .acts button.go{background:var(--accent) !important;border-color:var(--accent) !important;
     color:var(--on-accent) !important}
-  .acts button.draft{background:none !important;border-color:var(--accent) !important;
-    color:var(--accent) !important}
+  .acts button.draft,.acts button.opt{background:none !important;
+    border-color:var(--accent) !important;color:var(--accent) !important}
   .acts button.no{background:none !important;border-color:var(--line) !important;
     color:var(--dim) !important}
   .more{color:var(--accent) !important;font-weight:600}
@@ -477,7 +479,15 @@ function actions(c) {
   if (c.column !== 'review') return '';
   const b = [];
   if (Array.isArray(c.options) && c.options.length) {
-    c.options.forEach((o, i) => b.push(`<button class="${i === 0 ? 'go' : ''}" data-id="${c.id}" data-a="approve" data-l="${esc(o)}">${esc(o)}</button>`));
+    // K193, 14 Oct 2026, Andreas: "Only colour an option when I have marked it recommended,
+    // nothing filled otherwise." The fill used to go to index 0, which made the ORDER I happened
+    // to write the options in read as my recommendation. On K192 that filled a button saying
+    // "The 11 September job IS the claim", which is the one thing I had told him was his to state.
+    // Fill now follows an explicit `rec` field on the card, either the option text or its index.
+    // No rec, nothing filled: every option renders as an outlined tap.
+    const rec = typeof c.rec === 'number' ? c.rec
+      : typeof c.rec === 'string' ? c.options.findIndex(o => o === c.rec) : -1;
+    c.options.forEach((o, i) => b.push(`<button class="${i === rec ? 'go' : 'opt'}" data-id="${c.id}" data-a="approve" data-l="${esc(o)}">${esc(o)}</button>`));
   } else if (c.mode === 'draft') {
     b.push(`<button class="draft" data-id="${c.id}" data-a="draft" data-l="Draft it first">Draft it first</button>`);
     b.push(`<button class="go" data-id="${c.id}" data-a="approve" data-l="Approved, go">Approved, go</button>`);
