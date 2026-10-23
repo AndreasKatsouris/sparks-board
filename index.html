@@ -87,6 +87,10 @@
   .acts button.draft{background:var(--draft);border-color:var(--draft);color:#fff}
   .acts button.opt{background:none;border-color:var(--line);color:var(--ink)}
   .acts button.no{background:none;border-color:var(--no);color:var(--no-ink)}
+  .own{flex:1 1 100%}
+  .own textarea{width:100%;box-sizing:border-box;min-height:84px;padding:10px;border-radius:9px;border:1px solid var(--line);
+    background:var(--panel2);color:var(--ink);font:inherit;resize:vertical}
+  .ownacts{display:flex;gap:7px;margin-top:7px}
   .decided{margin-top:10px;padding:9px 11px;border-radius:9px;background:var(--ok-bg);
     color:var(--ok-ink);font-size:12.5px;border:1px solid var(--ok-line)}
   .decided.no{background:var(--bad-bg);color:var(--bad-ink);border-color:var(--bad-line)}
@@ -420,10 +424,14 @@ async function start() {
 // refresh collapsed whatever he was busy reading. Also hold the refresh entirely while
 // anything is open: do not move the page under him mid-sentence.
 const openCards = new Set();
+// 23 Oct 2026, Andreas msg 14976: every card must let him write his own answer. The text lives
+// here, not in the DOM, because render() rebuilds the list and would otherwise wipe it.
+const writing = {};
 
 setInterval(() => {
   if ($('app').classList.contains('hide')) return;
   if (openCards.size) return;
+  if (Object.values(writing).some(w => w.open)) return;
   load();
 }, 20000);
 document.addEventListener('visibilitychange', () => { if (!document.hidden) load(); });
@@ -471,7 +479,8 @@ async function decide(id, action, label) {
 function actions(c) {
   if (c.decision) {
     const bad = c.decision.action === 'reject';
-    return `<div class="decided${bad ? ' no' : ''}">${bad ? 'Rejected' : 'You chose'}: <b>${esc(c.decision.label)}</b>
+    const own = c.decision.action === 'custom';
+    return `<div class="decided${bad ? ' no' : ''}">${bad ? 'Rejected' : own ? 'You wrote' : 'You chose'}: <b>${esc(c.decision.label)}</b>
       &middot; ${new Date(c.decision.at).toLocaleString('en-ZA', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' })}
       ${c.decision.seen ? '&middot; actioned' : '&middot; sent to Sparks'}</div>`;
   }
@@ -493,6 +502,13 @@ function actions(c) {
   } else {
     b.push(`<button class="go" data-id="${c.id}" data-a="approve" data-l="Approved, go">Approved, go</button>`);
     b.push(`<button class="draft" data-id="${c.id}" data-a="draft" data-l="Draft it first">Draft it first</button>`);
+  }
+  const w = writing[c.id];
+  if (w && w.open) {
+    b.push(`<div class="own"><textarea data-w="${c.id}" rows="3" placeholder="Write your own answer">${esc(w.text || '')}</textarea>
+      <div class="ownacts"><button class="go" data-send="${c.id}">Send my answer</button><button class="opt" data-cancel="${c.id}">Cancel</button></div></div>`);
+  } else {
+    b.push(`<button class="opt" data-write="${c.id}">Write my own</button>`);
   }
   b.push(`<button class="no" data-id="${c.id}" data-a="reject" data-l="No">No</button>`);
   return `<div class="acts">${b.join('')}</div>`;
@@ -637,8 +653,24 @@ document.addEventListener('click', e => {
     more.textContent = now ? 'Hide' : 'Details';
     return;
   }
+  const wr = e.target.closest('[data-write]');
+  if (wr) { writing[wr.dataset.write] = { open: true, text: '' }; render(); const t = document.querySelector('textarea[data-w="' + wr.dataset.write + '"]'); if (t) t.focus(); return; }
+  const cn = e.target.closest('[data-cancel]');
+  if (cn) { delete writing[cn.dataset.cancel]; render(); return; }
+  const sd = e.target.closest('[data-send]');
+  if (sd) {
+    const id = sd.dataset.send, txt = ((writing[id] || {}).text || '').trim();
+    if (!txt) { const t = document.querySelector('textarea[data-w="' + id + '"]'); if (t) t.focus(); return; }
+    delete writing[id];
+    decide(id, 'custom', txt);
+    return;
+  }
   const btn = e.target.closest('[data-a]');
   if (btn) decide(btn.dataset.id, btn.dataset.a, btn.dataset.l);
+});
+document.addEventListener('input', e => {
+  const t = e.target.closest && e.target.closest('textarea[data-w]');
+  if (t && writing[t.dataset.w]) writing[t.dataset.w].text = t.value;
 });
 
 window.addEventListener('hashchange', () => { const id = cardFromHash(); if (id) focusCard(id); });
