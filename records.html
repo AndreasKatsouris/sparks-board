@@ -1,285 +1,105 @@
-<!doctype html><html lang="en-ZA"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Inspection week: the written records</title>
-<link rel="icon" href="data:,">
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Store records</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;font:16px/1.45 -apple-system,"Helvetica Neue",Helvetica,Arial,sans-serif;background:#eef2f4;color:#13293d}
-header{background:#003A70;color:#E5ECED;padding:18px 16px 16px}
-h1{margin:0 0 4px;font-size:19px;letter-spacing:.2px}
-.sub{font-size:13px;opacity:.82}
-.how{margin:0;padding:12px 16px;background:#fff;border-bottom:1px solid #d7dfe4;font-size:13.5px;color:#2E5D8A}
-.bar{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid #d7dfe4;padding:8px 12px;font-size:13px;font-weight:600;color:#2E5D8A}
-main{padding:10px 10px 170px;max-width:760px;margin:0 auto}
-section h2{font-size:13px;text-transform:uppercase;letter-spacing:.9px;color:#5d7285;margin:22px 4px 4px}
-.when{margin:0 4px 8px;font-size:12px;color:#8595a2}
-.gc{background:#dbe3e8;color:#5d7285;border-radius:10px;padding:1px 7px;font-size:11px;margin-left:4px}
-.row{background:#fff;border:1px solid #dde4e9;border-left:5px solid #dde4e9;border-radius:10px;padding:11px 12px;margin-bottom:8px}
-.row.done{border-left-color:#2e7d52}
-.row.no{border-left-color:#c62828}
-.row.na{border-left-color:#b9c4cc}
-.nm{font-weight:700;font-size:15.5px}
-.num{display:inline-block;min-width:22px;height:22px;line-height:22px;text-align:center;background:#003A70;color:#fff;border-radius:11px;font-size:12px;margin-right:7px;vertical-align:1px}
-.ctx{font-size:13px;margin:8px 0 9px;padding:7px 9px;border-radius:7px;background:#f3f6f8;color:#3c5466}
-.btns{display:flex;gap:6px}
-.b{flex:1;padding:12px 4px;border:1px solid #c3ced6;background:#fafcfd;color:#2E5D8A;border-radius:8px;font-size:13px;font-weight:700;letter-spacing:.3px}
-.b.sel[data-v=YES]{background:#2e7d52;border-color:#2e7d52;color:#fff}
-.b.sel[data-v=NO]{background:#c62828;border-color:#c62828;color:#fff}
-.b.sel[data-v="N/A"]{background:#7a8894;border-color:#7a8894;color:#fff}
-.sub2{margin-top:9px}
-.sub2 label{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.7px;color:#5d7285;margin-bottom:5px}
-input[type=text],input[type=number],input[type=date]{padding:11px 10px;border:1px solid #c3ced6;border-radius:8px;font:15px inherit;background:#fff;color:#13293d}
-input[type=text]{width:100%}
-.solo{margin-top:8px}
-.numrow{display:flex;align-items:center;gap:9px;margin-top:9px}
-.numrow input{width:110px;font-size:19px;font-weight:700;text-align:center}
-.unit{font-size:13px;color:#5d7285}
-.ph{display:flex;align-items:center;gap:9px;margin-top:10px;padding:10px;background:#f3f6f8;border-radius:8px;font-size:13.5px}
-.ph input,.nmchk input{width:21px;height:21px;flex:0 0 auto}
-.names{margin-top:9px;display:grid;gap:7px}
-.nmchk{display:flex;align-items:center;gap:9px;padding:9px 10px;background:#f3f6f8;border-radius:8px;font-size:14px;font-weight:600}
-.cm{width:100%;margin-top:9px;padding:9px;border:1px solid #c3ced6;border-radius:8px;font:14px inherit;resize:vertical;display:none}
-.row.show .cm,.row.no .cm{display:block}
-.whoami{background:#fff;border:1px dashed #b4c2cc;border-radius:10px;padding:12px;margin:18px 0 4px}
-.whoami label{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.7px;color:#5d7285;margin-bottom:6px}
-.whoami textarea{width:100%;padding:9px;border:1px solid #c3ced6;border-radius:8px;font:14px inherit;resize:vertical}
-footer{position:fixed;bottom:0;left:0;right:0;background:#003A70;color:#fff;padding:10px 12px;display:flex;gap:8px;align-items:center;box-shadow:0 -2px 10px rgba(0,0,0,.2)}
-footer .st{flex:1;font-size:12.5px;line-height:1.3}
-footer button{border:0;border-radius:8px;padding:11px 13px;font-size:13px;font-weight:700;background:#E5ECED;color:#003A70}
-footer button.g{background:#2e7d52;color:#fff}
-dialog{border:0;border-radius:12px;padding:0;width:92%;max-width:640px}
-dialog .dh{background:#003A70;color:#fff;padding:12px 14px;font-weight:700;font-size:14px}
-dialog pre{margin:0;padding:14px;white-space:pre-wrap;font:12.5px ui-monospace,Menlo,monospace;max-height:50vh;overflow:auto}
-dialog .df{padding:10px 14px;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;border-top:1px solid #e3e9ed}
-dialog .df button{border:0;border-radius:8px;padding:10px 14px;font-weight:700;background:#003A70;color:#fff}
-dialog .df button.ghost{background:#E5ECED;color:#003A70}
-.note{padding:0 14px 10px;font-size:12.5px;color:#5d7285}
+ :root{--bg:#0f1115;--fg:#e8eaed;--mut:#9aa0a6;--line:#2a2f3a;--acc:#4f8cff}
+ *{box-sizing:border-box}
+ body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+ #g{max-width:330px;margin:16vh auto;padding:0 20px;text-align:center}
+ h1{font-size:22px;margin:0 0 4px}h1 span{color:var(--acc)}
+ .sub{color:var(--mut);font-size:13px;margin:0 0 18px}
+ input{width:100%;padding:13px;margin:7px 0;border-radius:10px;border:1px solid var(--line);
+  background:#171a21;color:var(--fg);font-size:16px}
+ button{width:100%;padding:13px;margin-top:10px;border:none;border-radius:10px;
+  background:var(--acc);color:#fff;font-size:16px;font-weight:600}
+ .err{color:#ff8a80;font-size:13px;min-height:18px;margin-top:10px}
+ .bk{display:inline-block;margin-top:22px;color:var(--mut);font-size:13px;text-decoration:none}
 </style></head><body>
-<header>
-<h1>Inspection week: the written records</h1>
-<div class="sub">Ocean Basket The Grove &middot; 18 answers, none of them a new job<br>Register inspection Wednesday 21 October</div>
-</header>
-<p class="how">Morgan, this is the list I would otherwise have emailed you as twelve questions. Every line is a written record, a photograph or a one word answer. <b>Nothing here says anything was not done, and nothing here carries points.</b> The grey line under a question is why the inspector will ask for it. Your answers save on this phone as you go, so you can put it down and come back. When you are finished, hit <b>Send my answers</b>.</p>
-<div class="bar" id="bar"></div>
-<main><section><h2>Fryer oil<span class="gc">5</span></h2><p class="when">Needed before Wednesday 21 October. Asked on Monday 5 October and again on Wednesday 14 October.</p><div class="row" data-id="vats" data-type="num" data-sec="Fryer oil" data-label="How many fryer vats are on the grill line">
-<div class="nm"><span class="num">1</span>How many fryer vats are on the grill line</div>
-<div class="ctx">Our whole oil pack was built on an assumption of three. That is an assumption, not a fact, and every figure in it moves if the real number is different.</div>
-<div class="numrow"><input class="nm2" type="number" inputmode="numeric" min="1" max="8" placeholder="0"><span class="unit">vats</span></div>
-<textarea class="cm" placeholder="anything you want to add to this one" rows="2"></textarea></div><div class="row" data-id="tpm" data-type="yn+text" data-sec="Fryer oil" data-label="Is the TPM reader on site and working">
-<div class="nm"><span class="num">2</span>Is the TPM reader on site and working</div>
-<div class="ctx">TPM 25% is South African law, not a house rule. Without a working reader there is no reading to record.</div>
-<div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="N/A">N/A</button></div><div class="sub2"><label>Who has been trained to use it</label><input class="tx" type="text" placeholder="name"></div>
-<textarea class="cm" placeholder="anything you want to add to this one" rows="2"></textarea></div><div class="row" data-id="chart" data-type="yn+photo" data-sec="Fryer oil" data-label="Is the daily oil chart up at the fryer line">
-<div class="nm"><span class="num">3</span>Is the daily oil chart up at the fryer line</div>
-<div class="ctx">Photograph it as it stands today, filled in or blank. Blank is an answer, and it is a better answer than silence.</div>
-<div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="N/A">N/A</button></div><label class="ph"><input class="pc" type="checkbox"> I have sent the photograph on WhatsApp</label>
-<textarea class="cm" placeholder="anything you want to add to this one" rows="2"></textarea></div><div class="row" data-id="kemfry" data-type="num" data-sec="Fryer oil" data-label="KemFry stock on hand">
-<div class="nm"><span class="num">4</span>KemFry stock on hand</div>
-<div class="ctx">Count what is in the store room now.</div>
-<div class="numrow"><input class="nm2" type="number" inputmode="numeric" min="0" max="200" placeholder="0"><span class="unit">units</span></div>
-<textarea class="cm" placeholder="anything you want to add to this one" rows="2"></textarea></div><div class="row" data-id="docket" data-type="yn+text" data-sec="Fryer oil" data-label="Does the used oil leave with a registered collector who gives us a written docket">
-<div class="nm"><span class="num">5</span>Does the used oil leave with a registered collector who gives us a written docket</div>
-<div class="ctx">The inspector will ask to see that docket. A verbal arrangement with a man in a bakkie is a finding.</div>
-<div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="N/A">N/A</button></div><div class="sub2"><label>Who collects it</label><input class="tx" type="text" placeholder="company name"></div>
-<textarea class="cm" placeholder="anything you want to add to this one" rows="2"></textarea></div></section><section><h2>The health and safety register<span class="gc">3</span></h2><p class="when">Needed before Wednesday 21 October.</p><div class="row" data-id="ricecooker" data-type="yn+photo" data-sec="The health and safety register" data-label="Is the sushi rice cooker line corrected and written up as replaced, dated 5 October and signed">
-<div class="nm"><span class="num">6</span>Is the sushi rice cooker line corrected and written up as replaced, dated 5 October and signed</div>
-<div class="ctx">It still reads OVERDUE in the Due column. Photograph that line once it is corrected.</div>
-<div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="N/A">N/A</button></div><label class="ph"><input class="pc" type="checkbox"> I have sent the photograph on WhatsApp</label>
-<textarea class="cm" placeholder="anything you want to add to this one" rows="2"></textarea></div><div class="row" data-id="oldcooker" data-type="yn+date" data-sec="The health and safety register" data-label="Is the old rice cooker off site">
-<div class="nm"><span class="num">7</span>Is the old rice cooker off site</div>
-<div class="ctx">An unserviceable appliance still in the building is still on the register.</div>
-<div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="N/A">N/A</button></div><div class="sub2"><label>Date it left</label><input class="dt" type="date"></div>
-<textarea class="cm" placeholder="anything you want to add to this one" rows="2"></textarea></div><div class="row" data-id="ceiling" data-type="yn+date" data-sec="The health and safety register" data-label="Scullery ceiling panels, loose, your name against it and dated 14 October. Is it done">
-<div class="nm"><span class="num">8</span>Scullery ceiling panels, loose, your name against it and dated 14 October. Is it done</div>
-<div class="ctx">If it is not done, give me the date you are committing to and I will carry that date, not a chase.</div>
-<div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="N/A">N/A</button></div><div class="sub2"><label>If not done, the date you are giving it</label><input class="dt" type="date"></div>
-<textarea class="cm" placeholder="anything you want to add to this one" rows="2"></textarea></div></section><section><h2>Two short ones<span class="gc">2</span></h2><p class="when">Needed before Wednesday 21 October.</p><div class="row" data-id="rental" data-type="yn" data-sec="Two short ones" data-label="Is the October rental statement captured on Pilot">
-<div class="nm"><span class="num">9</span>Is the October rental statement captured on Pilot</div>
-
-<div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="N/A">N/A</button></div>
-<textarea class="cm" placeholder="anything you want to add to this one" rows="2"></textarea></div><div class="row" data-id="tsdnotice" data-type="yn+text" data-sec="Two short ones" data-label="Was the food cost and TSD notice of Tuesday 13 October read out at pre-shift and put up on the board">
-<div class="nm"><span class="num">10</span>Was the food cost and TSD notice of Tuesday 13 October read out at pre-shift and put up on the board</div>
-
-<div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="N/A">N/A</button></div><div class="sub2"><label>Who read it out</label><input class="tx" type="text" placeholder="name"></div>
-<textarea class="cm" placeholder="anything you want to add to this one" rows="2"></textarea></div></section><section><h2>Academy, one gap only<span class="gc">6</span></h2><p class="when">By close of trading Monday 19 October.</p><div class="row" data-id="acad-fortune" data-type="text" data-sec="Academy, one gap only" data-label="Who sits with Fortune">
-<div class="nm"><span class="num">11</span>Who sits with Fortune</div>
-<div class="ctx">The front of house and back of house split you gave covers most of the crew. These four groups it does not reach.</div>
-<input class="tx solo" type="text" placeholder="name">
-<textarea class="cm" placeholder="anything you want to add to this one" rows="2"></textarea></div><div class="row" data-id="acad-fillet" data-type="text" data-sec="Academy, one gap only" data-label="Who sits with the filleters">
-<div class="nm"><span class="num">12</span>Who sits with the filleters</div>
-
-<input class="tx solo" type="text" placeholder="name">
-<textarea class="cm" placeholder="anything you want to add to this one" rows="2"></textarea></div><div class="row" data-id="acad-scullery" data-type="text" data-sec="Academy, one gap only" data-label="Who sits with the scullery">
-<div class="nm"><span class="num">13</span>Who sits with the scullery</div>
-
-<input class="tx solo" type="text" placeholder="name">
-<textarea class="cm" placeholder="anything you want to add to this one" rows="2"></textarea></div><div class="row" data-id="acad-casuals" data-type="text" data-sec="Academy, one gap only" data-label="Who sits with the casuals">
-<div class="nm"><span class="num">14</span>Who sits with the casuals</div>
-
-<input class="tx solo" type="text" placeholder="name">
-<textarea class="cm" placeholder="anything you want to add to this one" rows="2"></textarea></div><div class="row" data-id="notice-p2" data-type="yn" data-sec="Academy, one gap only" data-label="Is page two of the Academy notice up on the crew board as well">
-<div class="nm"><span class="num">15</span>Is page two of the Academy notice up on the crew board as well</div>
-<div class="ctx">Andreas has a photograph of page one, so I know the notice went up. His photograph was proof that it is on the board, not a reading of every page of it.</div>
-<div class="btns"><button class="b" data-v="YES">YES</button><button class="b" data-v="NO">NO</button><button class="b" data-v="N/A">N/A</button></div>
-<textarea class="cm" placeholder="anything you want to add to this one" rows="2"></textarea></div><div class="row" data-id="notice-sign" data-type="sign" data-sec="Academy, one gap only" data-label="Have all four of you signed your own line on the notice">
-<div class="nm"><span class="num">16</span>Have all four of you signed your own line on the notice</div>
-<div class="ctx">Tick each name that has signed. Leave a name unticked rather than guessing on their behalf.</div>
-<div class="names"><label class="nmchk"><input class="sg" type="checkbox" data-n="Morgan"> Morgan has signed</label><label class="nmchk"><input class="sg" type="checkbox" data-n="Abigail"> Abigail has signed</label><label class="nmchk"><input class="sg" type="checkbox" data-n="Martha"> Martha has signed</label><label class="nmchk"><input class="sg" type="checkbox" data-n="Fortune"> Fortune has signed</label></div>
-<textarea class="cm" placeholder="anything you want to add to this one" rows="2"></textarea></div></section><section><h2>While yesterday is still fresh<span class="gc">2</span></h2><p class="when">By close of trading Monday 19 October. These two are photographs, nothing else.</p><div class="row" data-id="ltl-containers" data-type="photo" data-sec="While yesterday is still fresh" data-label="Photograph of the labelled containers">
-<div class="nm"><span class="num">17</span>Photograph of the labelled containers</div>
-<div class="ctx">A photograph is the standard the LTL corrective action asks for on this one, which is why I am asking for one rather than taking it as done.</div>
-<label class="ph"><input class="pc" type="checkbox"> I have sent the photograph on WhatsApp</label>
-<textarea class="cm" placeholder="anything you want to add to this one" rows="2"></textarea></div><div class="row" data-id="ltl-preptable" data-type="photo" data-sec="While yesterday is still fresh" data-label="Photograph of the cleaned grill-line prep table">
-<div class="nm"><span class="num">18</span>Photograph of the cleaned grill-line prep table</div>
-<div class="ctx">Same reason as the containers.</div>
-<label class="ph"><input class="pc" type="checkbox"> I have sent the photograph on WhatsApp</label>
-<textarea class="cm" placeholder="anything you want to add to this one" rows="2"></textarea></div></section>
-<div class="whoami"><label>Anything else I should know</label><textarea id="free" rows="3" placeholder="optional"></textarea></div>
-<div class="whoami"><label>Completed by</label><input id="who" type="text" placeholder="your name"></div>
-</main>
-<footer><div class="st" id="st"></div>
-<button id="reset">Reset</button><button class="g" id="send">Send my answers</button></footer>
-<dialog id="dlg"><div class="dh" id="dh">Your answers</div><pre id="out"></pre>
-<p class="note" id="nt"></p>
-<div class="df"><button class="ghost" id="cl">Back</button><button class="ghost" id="cp">Copy</button><button id="mail">Email it to Sparks</button></div></dialog>
+<div id="g">
+  <h1>Sparks <span>Board</span></h1>
+  <p class="sub">Store records</p>
+  <div id="w" class="sub">Checking this device...</div>
+  <div id="f" style="display:none">
+    <input id="em" type="email" placeholder="email" autocomplete="username">
+    <input id="pw" type="password" placeholder="password" autocomplete="current-password">
+    <button id="go">Sign in</button>
+  </div>
+  <div class="err" id="e"></div>
+  <a class="bk" href="./">&lsaquo; back to the board</a>
+</div>
+<script src="./fb.js"></script>
 <script>
-const KEY='grove_records_v1';
-const FB=false;
-const FB_KEY="";
-const DB="https://merakicaptiveportal-firebasedb-default-rtdb.firebaseio.com";
-const OWNER="uE2zjwuqMvN081HIfTKr7h2uD872";
-const TO="sparksbot@sparksclub.co.za";
-const NL=String.fromCharCode(10);
-const s0=JSON.parse(localStorage.getItem(KEY)||'{}');
-const A=s0.a||{};
-let free=s0.free||'', who=s0.who||'';
-const rows=[...document.querySelectorAll('.row')];
-const save=()=>{localStorage.setItem(KEY,JSON.stringify({a:A,free:free,who:who,at:new Date().toISOString()}));status()};
-const get=(id)=>A[id]||(A[id]={});
+const NODE = "records";
+const LS = 'sparksboard.session';
+const $ = i => document.getElementById(i);
+const API = (window.SPARKS_FB||{}).apiKey, DB = (window.SPARKS_FB||{}).dbUrl;
 
-function answered(r){
-  const a=A[r.dataset.id]||{}, t=r.dataset.type;
-  if(t==='num')return a.n!==undefined&&a.n!=='';
-  if(t==='text')return !!(a.t||'').trim();
-  if(t==='photo')return !!a.p;
-  if(t==='sign')return !!(a.sg&&a.sg.length);
-  return !!a.v;
-}
-function paint(r){
-  const a=A[r.dataset.id]||{};
-  r.classList.toggle('done',answered(r)&&a.v!=='NO');
-  r.classList.toggle('no',a.v==='NO');
-  r.classList.toggle('na',a.v==='N/A');
-  r.querySelectorAll('.b').forEach(b=>b.classList.toggle('sel',a.v===b.dataset.v));
-  const tx=r.querySelector('.tx');if(tx&&a.t!==undefined)tx.value=a.t;
-  const dt=r.querySelector('.dt');if(dt&&a.d)dt.value=a.d;
-  const nm=r.querySelector('.nm2');if(nm&&a.n!==undefined)nm.value=a.n;
-  const pc=r.querySelector('.pc');if(pc)pc.checked=!!a.p;
-  r.querySelectorAll('.sg').forEach(c=>c.checked=(a.sg||[]).indexOf(c.dataset.n)>=0);
-  const cm=r.querySelector('.cm');if(cm&&a.c){cm.value=a.c;r.classList.add('show');}
-}
-rows.forEach(r=>{
-  const id=r.dataset.id;
-  r.querySelectorAll('.b').forEach(b=>b.onclick=()=>{
-    const a=get(id);
-    a.v=(a.v===b.dataset.v)?undefined:b.dataset.v;
-    paint(r);save();
-  });
-  const tx=r.querySelector('.tx');if(tx)tx.oninput=e=>{get(id).t=e.target.value;save()};
-  const dt=r.querySelector('.dt');if(dt)dt.onchange=e=>{get(id).d=e.target.value;save();paint(r)};
-  const nm=r.querySelector('.nm2');if(nm)nm.oninput=e=>{get(id).n=e.target.value;save();paint(r)};
-  const pc=r.querySelector('.pc');if(pc)pc.onchange=e=>{get(id).p=e.target.checked;save();paint(r)};
-  r.querySelectorAll('.sg').forEach(c=>c.onchange=()=>{
-    const a=get(id);a.sg=[...r.querySelectorAll('.sg')].filter(x=>x.checked).map(x=>x.dataset.n);save();paint(r);
-  });
-  const cm=r.querySelector('.cm');if(cm)cm.oninput=e=>{get(id).c=e.target.value;save()};
-  paint(r);
-});
-document.getElementById('free').value=free;
-document.getElementById('free').oninput=e=>{free=e.target.value;save()};
-document.getElementById('who').value=who;
-document.getElementById('who').oninput=e=>{who=e.target.value;save()};
-
-function status(){
-  const done=rows.filter(answered).length;
-  const left=rows.length-done;
-  document.getElementById('st').textContent=done+' of '+rows.length+' answered'+(left?', '+left+' to go':', all done');
-  const due=rows.filter(r=>!answered(r)&&['vats','tpm','chart','kemfry','docket','ricecooker','oldcooker','ceiling','rental','tsdnotice'].indexOf(r.dataset.id)>=0).length;
-  document.getElementById('bar').textContent=due?due+' of the Wednesday items still open':'Every Wednesday item is answered';
-}
-document.getElementById('reset').onclick=()=>{
-  if(!confirm('Clear every answer on this phone?'))return;
-  for(const k in A)delete A[k];free='';who='';
-  localStorage.removeItem(KEY);
-  rows.forEach(r=>{r.className='row';r.querySelectorAll('input').forEach(i=>{if(i.type==='checkbox')i.checked=false;else i.value=''});const c=r.querySelector('.cm');if(c)c.value=''});
-  document.getElementById('free').value='';document.getElementById('who').value='';status();
+const sess = {
+  get(){ try { return JSON.parse(localStorage.getItem(LS)); } catch { return null; } },
+  set(s){ localStorage.setItem(LS, JSON.stringify(s)); },
 };
 
-function build(){
-  let t='THE GROVE, INSPECTION WEEK RECORDS'+NL;
-  t+='Completed by: '+(who.trim()||'not given')+NL;
-  t+='Sent: '+new Date().toLocaleString('en-ZA')+NL;
-  const un=[];
-  let sec='';
-  rows.forEach(r=>{
-    const a=A[r.dataset.id]||{},ty=r.dataset.type;
-    if(!answered(r)){un.push(r.querySelector('.num').textContent+'. '+r.dataset.label);return}
-    if(r.dataset.sec!==sec){sec=r.dataset.sec;t+=NL+sec.toUpperCase()+NL}
-    let v='';
-    if(ty==='num')v=a.n;
-    else if(ty==='text')v=a.t;
-    else if(ty==='photo')v=a.p?'photograph sent':'';
-    else if(ty==='sign')v=(a.sg||[]).join(', ')+' signed';
-    else{v=a.v;
-      if(a.t)v+=', '+a.t;
-      if(a.d)v+=', '+a.d;
-      if(a.p)v+=', photograph sent';}
-    t+='  '+r.querySelector('.num').textContent+'. '+r.dataset.label+': '+v+NL;
-    if(a.c)t+='     note: '+a.c+NL;
+// Same refresh dance as the board, and the same storage key, so one sign-in covers both.
+async function token(){
+  let s = sess.get();
+  if (!s) return null;
+  if (Date.now() < s.exp) return s;
+  const r = await fetch('https://securetoken.googleapis.com/v1/token?key=' + API, {
+    method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    body:'grant_type=refresh_token&refresh_token=' + encodeURIComponent(s.refresh),
   });
-  if(free.trim())t+=NL+'ALSO'+NL+'  '+free.trim()+NL;
-  t+=NL+'NOT ANSWERED ('+un.length+')'+NL+(un.length?un.map(x=>'  '+x).join(NL):'  none');
-  return t;
+  const j = await r.json();
+  if (!j.id_token) return null;
+  s = { uid: s.uid, tok: j.id_token, refresh: j.refresh_token, exp: Date.now() + 3300e3 };
+  sess.set(s);
+  return s;
 }
-function payload(){
-  const o={who:who,at:new Date().toISOString(),answers:{},free:free,text:build()};
-  rows.forEach(r=>{if(answered(r))o.answers[r.dataset.id]={type:r.dataset.type,label:r.dataset.label,...(A[r.dataset.id]||{})}});
-  o.unanswered=rows.filter(r=>!answered(r)).map(r=>r.dataset.id);
-  return o;
+
+async function signIn(email, password){
+  const r = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' + API, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ email, password, returnSecureToken:true }),
+  });
+  const j = await r.json();
+  if (!j.idToken) throw new Error((j.error&&j.error.message) || 'SIGNIN_FAILED');
+  sess.set({ uid:j.localId, tok:j.idToken, refresh:j.refreshToken, exp: Date.now()+3300e3 });
 }
-const dlg=document.getElementById('dlg');
-document.getElementById('send').onclick=async()=>{
-  document.getElementById('out').textContent=build();
-  document.getElementById('dh').textContent='Your answers';
-  document.getElementById('nt').textContent=FB?'Sending to Sparks now.':'Hit Email it to Sparks and your mail app opens with all of this already filled in. Then just send it.';
-  dlg.showModal();
-  if(!FB)return;
-  // Only ever report a send that the database actually accepted. A form that says "sent" on a
-  // refused write is worse than no form, because nobody goes looking for the answers.
-  try{
-    const au=await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key='+FB_KEY,
-      {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({returnSecureToken:true})});
-    const aj=await au.json();
-    if(!aj.idToken)throw new Error('auth');
-    const id='rec_'+Date.now();
-    const w=await fetch(DB+'/users/'+OWNER+'/grove_forms/'+id+'.json?auth='+aj.idToken,
-      {method:'PUT',body:JSON.stringify(payload())});
-    if(!w.ok)throw new Error('write '+w.status);
-    document.getElementById('dh').textContent='Sent to Sparks';
-    document.getElementById('nt').textContent='Sparks has it. You can close this.';
-  }catch(e){
-    document.getElementById('dh').textContent='Could not send it directly';
-    document.getElementById('nt').textContent='No problem. Hit Email it to Sparks and your mail app opens with everything already filled in.';
+
+// The fetch IS the permission check: it reads the signed-in user's OWN private subtree.
+async function openPage(){
+  const s = await token();
+  if (!s) return false;
+  const r = await fetch(DB + '/users/' + s.uid + '/pages/' + NODE + '.json?auth=' + s.tok);
+  if (!r.ok) return false;
+  const html = await r.json();
+  if (typeof html !== 'string' || !html) return false;
+  document.open(); document.write(html); document.close();
+  return true;
+}
+
+function ask(msg){
+  $('w').style.display = 'none';
+  $('f').style.display = '';
+  if (msg) $('e').textContent = msg;
+}
+
+$('go').onclick = async () => {
+  $('e').textContent = 'Signing in...';
+  try {
+    await signIn($('em').value.trim(), $('pw').value);
+    if (!(await openPage())) $('e').textContent = 'Signed in, but this page is not published to your account.';
+  } catch (err) {
+    $('e').textContent = /PASSWORD|EMAIL|CREDENTIAL/i.test(err.message)
+      ? 'Wrong email or password.' : 'Could not reach the server. Try again.';
   }
 };
-document.getElementById('mail').onclick=()=>{
-  const b=build();
-  location.href='mailto:'+TO+'?subject='+encodeURIComponent('Inspection week records, The Grove')+'&body='+encodeURIComponent(b);
-};
-document.getElementById('cp').onclick=async()=>{
-  try{await navigator.clipboard.writeText(build());document.getElementById('cp').textContent='Copied';
-    setTimeout(()=>document.getElementById('cp').textContent='Copy',1500);}catch(e){}
-};
-document.getElementById('cl').onclick=()=>dlg.close();
-status();
-</script></body></html>
+$('pw').addEventListener('keydown', e => { if (e.key === 'Enter') $('go').click(); });
+
+(async () => {
+  if (!API || !DB) { ask('Configuration did not load. Reload the page.'); return; }
+  try { if (await openPage()) return; } catch (e) {}
+  ask('');
+})();
+</script>
+</body></html>
