@@ -465,7 +465,7 @@ async function decide(id, action, label) {
   const patch = {
     decision: { action, label: label || action, at: new Date().toISOString() },
     // Approving does not finish the job, it hands it to me. Only a rejection is done on the spot.
-    column: action === 'reject' ? 'done' : 'progress',
+    column: (action === 'reject' || action === 'bin') ? 'done' : 'progress',
     updated: new Date().toISOString(),
   };
   cards[id] = { ...cards[id], ...patch };   // optimistic, so the tap feels instant
@@ -476,14 +476,21 @@ async function decide(id, action, label) {
   load();
 }
 
+function progressActs(c) {
+  return `<div class="acts"><button class="draft" data-id="${c.id}" data-a="chase" data-l="Chase">Chase</button>
+    <button class="no" data-id="${c.id}" data-a="bin" data-l="Bin">Bin</button></div>`;
+}
+
 function actions(c) {
   if (c.decision) {
-    const bad = c.decision.action === 'reject';
+    const bad = c.decision.action === 'reject' || c.decision.action === 'bin';
     const own = c.decision.action === 'custom';
-    return `<div class="decided${bad ? ' no' : ''}">${bad ? 'Rejected' : own ? 'You wrote' : 'You chose'}: <b>${esc(c.decision.label)}</b>
+    const line = `<div class="decided${bad ? ' no' : ''}">${c.decision.action === 'bin' ? 'Binned' : bad ? 'Rejected' : own ? 'You wrote' : 'You chose'}: <b>${esc(c.decision.label)}</b>
       &middot; ${new Date(c.decision.at).toLocaleString('en-ZA', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' })}
-      ${c.decision.seen ? '&middot; actioned' : '&middot; sent to Sparks'}</div>`;
+      ${c.decision.done ? '&middot; actioned' : c.decision.seen ? '&middot; with Sparks' : '&middot; sent to Sparks'}</div>`;
+    return c.column === 'progress' ? line + progressActs(c) : line;
   }
+  if (c.column === 'progress') return progressActs(c);
   if (c.column !== 'review') return '';
   const b = [];
   if (Array.isArray(c.options) && c.options.length) {
