@@ -177,6 +177,9 @@
   .id{font-size:10px !important}
   .chip{font-size:10px !important}
   .detail{font-size:13px !important}
+  .detail b{color:var(--ink);font-weight:600}
+  .chip.mode{background:none !important;border:1px solid var(--line);color:var(--dim) !important}
+  .prog{color:var(--dim);font-size:12px;margin:0 2px 10px;font-variant-numeric:tabular-nums}
 </style>
 <!-- Applied before first paint, otherwise a light-mode phone flashes the dark palette on every load. -->
 <script>document.documentElement.dataset.theme = localStorage.getItem('sparksboard.theme') || 'auto';</script>
@@ -452,6 +455,11 @@ function matches(c, q) {
   return [c.title, c.tag, c.detail, c.owner, c.decision?.label].some(v => n(v).includes(t));
 }
 
+function leadLine(t) {
+  const s = String(t ?? ''), i = s.indexOf('\n');
+  return i < 0 ? esc(s) : '<b>' + esc(s.slice(0, i)) + '</b>' + esc(s.slice(i));
+}
+
 function dueChip(d) {
   if (!d) return '';
   const n = dayDiff(d);
@@ -613,7 +621,11 @@ function render() {
     return `<button class="${c.k === active ? 'on' : ''}" data-col="${c.k}">${c.label}<b>${n}</b></button>`;
   }).join('');
 
-  const byDue = (a, b) => (a.due || '9999') < (b.due || '9999') ? -1 : 1;
+  const byDue = (a, b) => {
+    const da = a.due || '9999', db = b.due || '9999';
+    if (da !== db) return da < db ? -1 : 1;
+    return String(a.created || a.id) < String(b.created || b.id) ? -1 : 1;
+  };
   const colOrder = Object.fromEntries(COLS.map((c, i) => [c.k, i]));
   let rows, head = '';
   if (query) {
@@ -625,6 +637,11 @@ function render() {
     rows = all.filter(c => c.column === active).sort(byDue);
   }
 
+  const todayLocal = new Date().toDateString();
+  const clearedToday = all.filter(c => c.decision && c.decision.at && new Date(c.decision.at).toDateString() === todayLocal).length;
+  if (!query && active === 'review' && (rows.length || clearedToday)) {
+    head = `<div class="prog">${clearedToday} cleared today &middot; ${rows.length} left</div>`;
+  }
   $('list').innerHTML = rows.length ? head + rows.map(c => {
     const blocked = c.column === 'blocked';
     const isOpen = openCards.has(c.id);
@@ -638,12 +655,12 @@ function render() {
         ${blocked && c.blockedSince ? `<span class="chip over">${dayDiff(c.blockedSince) * -1}d</span>` : ''}
         ${c.column === 'review' && c.mode === 'draft' ? `<span class="chip mode">draft first</span>` : ''}
       </div>
-      ${c.detail ? `<span class="more">${isOpen ? 'Hide' : 'Details'}</span><div class="detail">${esc(c.detail)}</div>` : ''}
+      ${c.detail ? `<span class="more">${isOpen ? 'Hide' : 'Details'}</span><div class="detail">${leadLine(c.detail)}</div>` : ''}
       ${actions(c)}
     </div>`;
   }).join('') : query
     ? `<div class="empty">No card matches &ldquo;${esc(query)}&rdquo;.</div>`
-    : `<div class="empty">Nothing here.${active === 'review' ? '<br>Clear board.' : ''}</div>`;
+    : `<div class="empty">Nothing here.${active === 'review' ? `<br>Clear board.${clearedToday ? '<br>' + clearedToday + ' cleared today.' : ''}` : ''}</div>`;
 }
 
 document.addEventListener('click', e => {
